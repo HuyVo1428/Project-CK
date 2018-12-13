@@ -15,45 +15,38 @@ namespace FormGame
     {
         //Biến cơ bản
         //System.Media.SoundPlayer PlayerStart = new System.Media.SoundPlayer(@"C:\Sudoku\media\sound01.wav");
-        System.Media.SoundPlayer PlayerStart = new System.Media.SoundPlayer(Properties.Resources.sound01);
-
-        int[,]arr = new int[9, 9];
+        int [,]arr = new int[9, 9];
         public SUDOKU3x3()
         {
             InitializeComponent();
-        }
+            
 
-        //Kiểm tra sudoku3x3
+        }
         int check3(int[,] arr, int x, int y)
         {
-            //Kiểm cột
             for (int i = 0; i < 9; i++)
-            {
                 if (arr[x, i] == arr[x, y] && i != y)
                 {
+                    //MessageBox.Show(x.ToString()+y.ToString()+" "+Convert.ToString(arr[x, i]) + " "+x.ToString() +i.ToString()+" "  + Convert.ToString(arr[x, y]));
                     return 0;
                 }
-            }
-            //Kiểm cột
             for (int j = 0; j < 9; j++)
-            {
                 if (arr[j, y] == arr[x, y] && j != x)
                 {
+                    //MessageBox.Show(x.ToString() + y.ToString() + " " + Convert.ToString(arr[j,y]) + " "+j.ToString()+y.ToString()+" " + Convert.ToString(arr[x, y]));
                     return 0;
                 }
-            }
-            //Kiểm ô
             int a = x / 3;
             int b = y / 3;
             for (int i = 3 * a; i < 3 * a + 3; i++)
                 for (int j = 3 * b; j < 3 * b + 3; j++)
                     if (arr[i, j] == arr[x, y] && i != x && j != y)
                     {
+                        //MessageBox.Show(x.ToString() + y.ToString() + " " + Convert.ToString(arr[i, j]) + " "+i.ToString()+j.ToString()+" " + Convert.ToString(arr[x, y]));
                         return 0;
                     }
             return 1;
         }
-
         public void Addevent()
         {
             //Duyệt 
@@ -61,36 +54,31 @@ namespace FormGame
                 for (int j = 0; j< 9;j++)
                 {
                     #region Tìm textBox  và chuyuển đổi các thông số
-
                     TextBox control = (TextBox)this.Controls.Find("textBox" + (i * 9 + (j + 1)).ToString(), true).SingleOrDefault();
-
                     string temp1 = i.ToString();
                     string temp2 = j.ToString();
                     int temp3 = i;
                     int temp4 = j;
-
                     #endregion
                     #region Thêm event
                     control.KeyPress += (s, e) =>
                      {
                          #region Kiểm tra nhập vào là số từ 1-9
                          string Validchar = "123456789";
-
                          if (control.Text != "" || !Validchar.Contains(e.KeyChar))
                              e.Handled = true;
+
                          else
                          {
                              #region Xử lý khi nhập số hợp lệ
                              //Đầu vào đúng gửi dữ liệu nhập về cho server: CẤU TRÚC: ?+3+<TOADOHANG>+<TOADOCOT>+<GIATRINHAP>
                              arr[temp3, temp4] = Convert.ToInt32(Convert.ToString(e.KeyChar));
                              string test = "?" + "3" + temp1 + temp2 + e.KeyChar;
-
                              ASCIIEncoding encode = new ASCIIEncoding();
                              try
                              {
                                  Control1.byteSend = encode.GetBytes(test);
                                  Control1.stm.Write(Control1.byteSend, 0, Control1.byteSend.Length);
-
                                 //Nhận kết quả kiểm tra từ server
                                  Control1.byteReceive = new byte[100];
                                  int k = Control1.stm.Read(Control1.byteReceive, 0, 100);
@@ -99,14 +87,13 @@ namespace FormGame
                                  {
                                      test += Convert.ToChar(Control1.byteReceive[h]);
                                  }
-
                                  #region Xu ly khi ô nhập bị sai
+
                                  if (test == "0")
                                  {
                                      control.BackColor = Color.Red;
                                      control.ForeColor = Color.White;
                                     #region doi mau các ô sai liên quan
-                                     //kiểm tra dòng
                                     for (int kt = 0; kt < 9; kt++)
                                      {
                                          TextBox kiemtra = (TextBox)this.Controls.Find("textBox" + (temp3 * 9 + (kt + 1)).ToString(), true).SingleOrDefault();
@@ -116,22 +103,20 @@ namespace FormGame
                                              kiemtra.ForeColor = Color.White;
                                          }
                                      }
-                                    //kiểm tra cột
                                      for (int kt = 0; kt < 9; kt++)
                                      {
                                          TextBox kiemtra = (TextBox)this.Controls.Find("textBox" + (kt * 9 + (temp4 + 1)).ToString(), true).SingleOrDefault();
-                                         if (arr[kt, temp4] == arr[temp3, temp4] && kt != temp3 && kiemtra.Enabled) 
+                                         if (arr[kt, temp4] == arr[temp3, temp4] && kt != temp3&& kiemtra.Enabled)
                                          {
                                              kiemtra.BackColor = Color.Red;
                                              kiemtra.ForeColor = Color.White;
                                          }
                                      }
-                                     //kiểm tra ô lớn
+
                                      for (int hangocon = 3 * (temp3 / 3); hangocon < 3 * (temp3 / 3) + 3; hangocon++)
                                          for (int cotocon = 3 * (temp4 / 3); cotocon < 3 * (temp4 / 3) + 3; cotocon++)
                                          {
                                              TextBox kiemtra = (TextBox)this.Controls.Find("textBox" + (hangocon * 9 + (cotocon + 1)).ToString(), true).SingleOrDefault();
-
                                              if (arr[hangocon, cotocon] == arr[temp3, temp4] && hangocon != temp3 && cotocon != temp4 && kiemtra.Enabled)
                                              {
                                                  kiemtra.BackColor = Color.Red;
@@ -145,7 +130,7 @@ namespace FormGame
                                     //CheckTrungTrenCot(Pressed, temp4);
                                     //CheckTrungArea(Pressed, temp3, temp4);
                                     control.BackColor = Color.Red;
-                                    control.ForeColor = Color.White;
+                                     control.ForeColor = Color.White;
                                  }
                                  else
                                  {
@@ -179,7 +164,7 @@ namespace FormGame
                                                  kiemtra.ForeColor = Color.White;
                                                  kiemtra.BackColor = Color.Green;
                                              }
-
+                                         
                                          }
                                      }
                                  }
@@ -207,9 +192,9 @@ namespace FormGame
                                              }
 
                                      }
-                                 #endregion
+                                #endregion
 
-                             }
+                            }
                              catch (Exception)
                              {
                                  MessageBox.Show("Lỗi! server ngưng hoạt động!");
@@ -217,8 +202,7 @@ namespace FormGame
                              #endregion
                          }
                          #endregion
-
-                         if (e.KeyChar == Convert.ToChar(8)) 
+                         if (e.KeyChar==Convert.ToChar(8))
                          {
                              #region xử lý khi nhập nút xóa
                              #region gửi dữ liệu update về cho server
@@ -285,7 +269,7 @@ namespace FormGame
         //Khởi tạo form lấy dữ liệu mảng từ server + Thêm event ràng buộc dữ liệu nhập vào+Gửi dữ liệu hợp lệ về server để kiểm tra
         private void Form1_Load(object sender, EventArgs e)
         {
-            PlayerStart.PlayLooping();
+            //PlayerStart.PlayLooping();
             Control1.byteReceive = new byte[100];
             Control1.stm.Read(Control1.byteReceive, 0, 100);
             for (int i = 0; i < 9; i++)
@@ -328,7 +312,6 @@ namespace FormGame
                     TextBox control = (TextBox)this.Controls.Find("textBox" + (i * 9 + (j + 1)).ToString(), true).SingleOrDefault();
                     if (control.Text == "")
                         control.BackColor = Color.Red;
-
                     if (control.BackColor == Color.Red)
                         result = false;
                     control.Enabled = false;                   
@@ -346,6 +329,7 @@ namespace FormGame
                 pnNotify.Visible = true;
             }
             Check = 1;
+            
         }
         private void btnReplay_Click(object sender, EventArgs e)
         {
@@ -461,12 +445,12 @@ namespace FormGame
             
             if (btnSound.Text == "Tắt Âm thanh")
             {
-                PlayerStart.Stop();
+                //PlayerStart.Stop();
                 btnSound.Text = "Bật Âm thanh";
             }
             else
             {
-                PlayerStart.PlayLooping();
+                //PlayerStart.PlayLooping();
                 btnSound.Text = "Tắt Âm thanh";
             }
         }

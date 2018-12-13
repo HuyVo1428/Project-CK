@@ -44,23 +44,15 @@ F:\UIT\LAP_TRINH_MANG_CAN_BAN\GK\GK_181102\GK_181102\FormServer\obj\Debug\FormSe
 F:\UIT\LAP_TRINH_MANG_CAN_BAN\GK\GK_181102\GK_181102\FormServer\obj\Debug\FormServer.csproj.GenerateResource.Cache
 F:\UIT\LAP_TRINH_MANG_CAN_BAN\GK\GK_181102\GK_181102\FormServer\obj\Debug\FormServer.exe
 F:\UIT\LAP_TRINH_MANG_CAN_BAN\GK\GK_181102\GK_181102\FormServer\obj\Debug\FormServer.pdb
-F:\UIT folder\HOC KI I.3\LTMCB\ProjectGK\GK_181104\GK_181104\FormServer\bin\Debug\FormServer.exe.config
-F:\UIT folder\HOC KI I.3\LTMCB\ProjectGK\GK_181104\GK_181104\FormServer\bin\Debug\FormServer.exe
-F:\UIT folder\HOC KI I.3\LTMCB\ProjectGK\GK_181104\GK_181104\FormServer\bin\Debug\FormServer.pdb
-F:\UIT folder\HOC KI I.3\LTMCB\ProjectGK\GK_181104\GK_181104\FormServer\obj\Debug\FormServer.csprojAssemblyReference.cache
-F:\UIT folder\HOC KI I.3\LTMCB\ProjectGK\GK_181104\GK_181104\FormServer\obj\Debug\FormServer.ServerGame.resources
-F:\UIT folder\HOC KI I.3\LTMCB\ProjectGK\GK_181104\GK_181104\FormServer\obj\Debug\FormServer.Properties.Resources.resources
-F:\UIT folder\HOC KI I.3\LTMCB\ProjectGK\GK_181104\GK_181104\FormServer\obj\Debug\FormServer.csproj.GenerateResource.cache
-F:\UIT folder\HOC KI I.3\LTMCB\ProjectGK\GK_181104\GK_181104\FormServer\obj\Debug\FormServer.csproj.CoreCompileInputs.cache
-F:\UIT folder\HOC KI I.3\LTMCB\ProjectGK\GK_181104\GK_181104\FormServer\obj\Debug\FormServer.exe
-F:\UIT folder\HOC KI I.3\LTMCB\ProjectGK\GK_181104\GK_181104\FormServer\obj\Debug\FormServer.pdb
-F:\UIT folder\I.3\LTMCB\ProjectGK\GK_181104\GK_181104\FormServer\bin\Debug\FormServer.exe.config
-F:\UIT folder\I.3\LTMCB\ProjectGK\GK_181104\GK_181104\FormServer\bin\Debug\FormServer.exe
-F:\UIT folder\I.3\LTMCB\ProjectGK\GK_181104\GK_181104\FormServer\bin\Debug\FormServer.pdb
-F:\UIT folder\I.3\LTMCB\ProjectGK\GK_181104\GK_181104\FormServer\obj\Debug\FormServer.csprojAssemblyReference.cache
-F:\UIT folder\I.3\LTMCB\ProjectGK\GK_181104\GK_181104\FormServer\obj\Debug\FormServer.ServerGame.resources
-F:\UIT folder\I.3\LTMCB\ProjectGK\GK_181104\GK_181104\FormServer\obj\Debug\FormServer.Properties.Resources.resources
-F:\UIT folder\I.3\LTMCB\ProjectGK\GK_181104\GK_181104\FormServer\obj\Debug\FormServer.csproj.GenerateResource.cache
-F:\UIT folder\I.3\LTMCB\ProjectGK\GK_181104\GK_181104\FormServer\obj\Debug\FormServer.csproj.CoreCompileInputs.cache
-F:\UIT folder\I.3\LTMCB\ProjectGK\GK_181104\GK_181104\FormServer\obj\Debug\FormServer.exe
-F:\UIT folder\I.3\LTMCB\ProjectGK\GK_181104\GK_181104\FormServer\obj\Debug\FormServer.pdb
+C:\Users\Dell\Desktop\GK_181104\FormServer\bin\Debug\FormServer.exe.config
+C:\Users\Dell\Desktop\GK_181104\FormServer\obj\Debug\FormServer.exe
+C:\Users\Dell\Desktop\GK_181104\FormServer\obj\Debug\FormServer.pdb
+C:\Users\Dell\Desktop\GK_181104\FormServer\bin\Debug\FormServer.exe
+C:\Users\Dell\Desktop\GK_181104\FormServer\bin\Debug\FormServer.pdb
+C:\Users\Dell\Desktop\GK_181104\FormServer\obj\Debug\FormServer.csprojResolveAssemblyReference.cache
+C:\Users\Dell\Desktop\GK_181104\FormServer\obj\Debug\FormServer.ServerGame.resources
+C:\Users\Dell\Desktop\GK_181104\FormServer\obj\Debug\FormServer.Properties.Resources.resources
+C:\Users\Dell\Desktop\GK_181104\FormServer\obj\Debug\FormServer.csproj.GenerateResource.Cache
+C:\Users\Dell\Documents\GitHub\Project-CK\GK_181104\FormServer\bin\Debug\FormServer.exe.config
+C:\Users\Dell\Documents\GitHub\Project-CK\GK_181104\FormServer\obj\Debug\FormServer.exe
+C:\Users\Dell\Documents\GitHub\Project-CK\GK_181104\FormServer\obj\Debug\FormServer.pdb

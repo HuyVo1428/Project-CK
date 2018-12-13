@@ -14,9 +14,7 @@ namespace FormGame
     public partial class Game4x4 : Form
     {
         //Biến cơ bản
-        //System.Media.SoundPlayer PlayerStart = new System.Media.SoundPlayer(@"C:\Sudoku\media\sound01.wav");
-        System.Media.SoundPlayer PlayerStart = new System.Media.SoundPlayer(Properties.Resources.sound01);
-
+        System.Media.SoundPlayer PlayerStart = new System.Media.SoundPlayer(@"C:\Sudoku\media\sound01.wav");
         int[,] arr = new int[16, 16];
         public Game4x4()
         {
@@ -57,9 +55,9 @@ namespace FormGame
                     {
                         string Validchar = "0123456789";
                         //Kiểm tra nhập vào là số từ 1-16
-                        if (!Validchar.Contains(e.KeyChar) || (control.Text == "1" && (e.KeyChar == '7' || e.KeyChar == '8' || e.KeyChar == '9'))
-                            || (control.Text != "1" && control.Text != "") || (control.Text == "" && e.KeyChar.ToString() == "0")) 
-                            e.Handled = true; 
+                        if (!Validchar.Contains(e.KeyChar)||(control.Text=="1"&&(e.KeyChar=='7'||e.KeyChar=='8'||e.KeyChar=='9'))
+                            ||(control.Text!="1"&&control.Text!="")||(control.Text==""&&e.KeyChar.ToString()=="0"))
+                            e.Handled = true;
                         else
                         {
                             #region Xử lý khi nhập số hợp lệ
@@ -69,11 +67,9 @@ namespace FormGame
                             try
                             {
                                 arr[temp3, temp4] = Convert.ToInt32(control.Text + e.KeyChar);
-
                                 ASCIIEncoding encode = new ASCIIEncoding();
                                 Control1.byteSend = encode.GetBytes(test);
                                 Control1.stm.Write(Control1.byteSend, 0, Control1.byteSend.Length);
-
                                 //Nhận dữ liệu kiểm tra từ server
                                 Control1.byteReceive = new byte[100];
                                 int k = Control1.stm.Read(Control1.byteReceive, 0, 100);
@@ -90,14 +86,12 @@ namespace FormGame
                                     for (int kt = 0; kt < 16; kt++)
                                     {
                                         TextBox kiemtra = (TextBox)this.Controls.Find("textBox" + (temp3 * 16 + (kt + 1)).ToString(), true).SingleOrDefault();
-
                                         if (arr[temp3, kt] == arr[temp3, temp4] && kt != temp4 && kiemtra.Enabled)
                                         {
                                             kiemtra.BackColor = Color.Red;
                                             kiemtra.ForeColor = Color.White;
                                         }
                                     }
-
                                     for (int kt = 0; kt < 16; kt++)
                                     {
                                         TextBox kiemtra = (TextBox)this.Controls.Find("textBox" + (kt * 16 + (temp4 + 1)).ToString(), true).SingleOrDefault();
@@ -133,12 +127,10 @@ namespace FormGame
                                     control.BackColor = Color.Green;
                                     control.ForeColor = Color.White;
                                 }
-
                                 #region đổi màu lien quan
                                 for (int kt = 0; kt < 16; kt++)
                                 {
                                     TextBox kiemtra = (TextBox)this.Controls.Find("textBox" + (temp3 * 16 + (kt + 1)).ToString(), true).SingleOrDefault();
-
                                     if (kiemtra.BackColor == Color.Red)
                                     {
                                         if (check4(arr, temp3, kt) == 1)
@@ -203,7 +195,6 @@ namespace FormGame
                                 for (int kt = 0; kt < 16; kt++)
                                 {
                                     TextBox kiemtra = (TextBox)this.Controls.Find("textBox" + (temp3 * 16 + (kt + 1)).ToString(), true).SingleOrDefault();
-
                                     if (kiemtra.BackColor == Color.Red)
                                     {
                                         if (check4(arr, temp3, kt) == 1)
@@ -213,7 +204,6 @@ namespace FormGame
                                         }
                                     }
                                 }
-
                                 for (int kt = 0; kt < 16; kt++)
                                 {
                                     TextBox kiemtra = (TextBox)this.Controls.Find("textBox" + (kt * 16 + (temp4 + 1)).ToString(), true).SingleOrDefault();
@@ -226,7 +216,6 @@ namespace FormGame
                                         }
                                     }
                                 }
-
                                 for (int hangocon = 4 * (temp3 / 4); hangocon < 4 * (temp3 / 4) + 4; hangocon++)
                                     for (int cotocon = 4 * (temp4 / 4); cotocon < 4 * (temp4 / 4) + 4; cotocon++)
                                     {
@@ -380,9 +369,7 @@ namespace FormGame
                         {
                             control.Text += Convert.ToChar(Control1.byteReceive[chiso + 1]);
                             arr[i, j] = Convert.ToInt32(control.Text);
-
                             chiso = chiso + 2;
-
                             control.BackColor = Color.Yellow;
                             control.Enabled = false;
                         }
@@ -399,11 +386,8 @@ namespace FormGame
                         {
                             control.Text += Convert.ToChar(Control1.byteReceive[chiso + 1]);
                             control.Text += Convert.ToChar(Control1.byteReceive[chiso + 2]);
-
                             arr[i, j] = Convert.ToInt32(control.Text);
-
                             chiso = chiso + 3;
-
                             control.BackColor = Color.Yellow;
                             control.Enabled = false;
                         }
@@ -439,10 +423,8 @@ namespace FormGame
                 for (int j = 0; j < 16; j++)
                 {
                     TextBox control = (TextBox)this.Controls.Find("textBox" + Convert.ToString(i * 16 + (j + 1)), true).SingleOrDefault();
-
                     if (control.Text == "")
                         control.BackColor = Color.Red;
-
                     if (control.BackColor == Color.Red)
                         result = false;
                     control.Enabled = false;
