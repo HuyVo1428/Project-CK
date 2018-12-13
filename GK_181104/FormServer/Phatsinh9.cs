@@ -230,8 +230,6 @@ namespace FormServer
 
         }
         #endregion
-
-
         //Ham phat sinh
         public int[,] phatsinh()
         {

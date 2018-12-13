@@ -19,7 +19,6 @@ namespace FormServer
         Random rnd = new Random();
         //Ma trận phần tử đầy đủ
         List<List<int>> matrix_full = new List<List<int>>();
-        //sdfgh
         //Ma trận phần tử đục lỗ
         List<List<int>> matrix_half = new List<List<int>>();
 

@@ -29,9 +29,12 @@
         private void InitializeComponent()
         {
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnSound = new System.Windows.Forms.Button();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.passwordbox = new System.Windows.Forms.TextBox();
             this.usernamebox = new System.Windows.Forms.TextBox();
@@ -41,7 +44,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
-            this.btnSound = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -62,6 +65,18 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(953, 483);
             this.panel2.TabIndex = 12;
+            // 
+            // btnSound
+            // 
+            this.btnSound.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.btnSound.Font = new System.Drawing.Font("Candara", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSound.Location = new System.Drawing.Point(828, 451);
+            this.btnSound.Name = "btnSound";
+            this.btnSound.Size = new System.Drawing.Size(113, 32);
+            this.btnSound.TabIndex = 12;
+            this.btnSound.Text = "Tắt Âm thanh";
+            this.btnSound.UseVisualStyleBackColor = false;
+            this.btnSound.Click += new System.EventHandler(this.btnSound_Click);
             // 
             // panel4
             // 
@@ -86,6 +101,9 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox1.Controls.Add(this.button5);
+            this.groupBox1.Controls.Add(this.button4);
+            this.groupBox1.Controls.Add(this.button3);
             this.groupBox1.Controls.Add(this.button2);
             this.groupBox1.Controls.Add(this.passwordbox);
             this.groupBox1.Controls.Add(this.usernamebox);
@@ -93,15 +111,39 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(599, 202);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(248, 128);
+            this.groupBox1.Size = new System.Drawing.Size(284, 128);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
+            // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.button4.Font = new System.Drawing.Font("Candara", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.Location = new System.Drawing.Point(185, 10);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(99, 42);
+            this.button4.TabIndex = 14;
+            this.button4.Text = "Vào phòng";
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.button3.Font = new System.Drawing.Font("Candara", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button3.Location = new System.Drawing.Point(0, 10);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(99, 42);
+            this.button3.TabIndex = 13;
+            this.button3.Text = "Tạo phòng";
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button2
             // 
             this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.button2.Font = new System.Drawing.Font("Candara", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(70, 39);
+            this.button2.Location = new System.Drawing.Point(0, 50);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(99, 42);
             this.button2.TabIndex = 3;
@@ -117,7 +159,6 @@
             this.passwordbox.Size = new System.Drawing.Size(195, 20);
             this.passwordbox.TabIndex = 1;
             this.passwordbox.UseSystemPasswordChar = true;
-            this.passwordbox.TextChanged += new System.EventHandler(this.passwordbox_TextChanged);
             // 
             // usernamebox
             // 
@@ -125,7 +166,6 @@
             this.usernamebox.Name = "usernamebox";
             this.usernamebox.Size = new System.Drawing.Size(195, 20);
             this.usernamebox.TabIndex = 0;
-            this.usernamebox.TextChanged += new System.EventHandler(this.usernamebox_TextChanged);
             // 
             // label2
             // 
@@ -158,7 +198,6 @@
             this.lbLogin.TabIndex = 7;
             this.lbLogin.Text = "Đăng nhập";
             this.lbLogin.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.lbLogin.Click += new System.EventHandler(this.label3_Click);
             // 
             // panel1
             // 
@@ -195,17 +234,18 @@
             this.btnExit.UseVisualStyleBackColor = false;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
-            // btnSound
+            // button5
             // 
-            this.btnSound.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.btnSound.Font = new System.Drawing.Font("Candara", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSound.Location = new System.Drawing.Point(828, 451);
-            this.btnSound.Name = "btnSound";
-            this.btnSound.Size = new System.Drawing.Size(113, 32);
-            this.btnSound.TabIndex = 12;
-            this.btnSound.Text = "Tắt Âm thanh";
-            this.btnSound.UseVisualStyleBackColor = false;
-            this.btnSound.Click += new System.EventHandler(this.btnSound_Click);
+            this.button5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.button5.Font = new System.Drawing.Font("Candara", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button5.Location = new System.Drawing.Point(185, 50);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(99, 42);
+            this.button5.TabIndex = 15;
+            this.button5.Text = "Chơi ngay";
+            this.button5.UseVisualStyleBackColor = false;
+            this.button5.Visible = false;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // Control1
             // 
@@ -246,5 +286,8 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Button btnSound;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
     }
 }
