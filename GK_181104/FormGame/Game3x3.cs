@@ -13,14 +13,91 @@ namespace FormGame
 {
     public partial class SUDOKU3x3 : Form
     {
-        //Biến cơ bản
         //System.Media.SoundPlayer PlayerStart = new System.Media.SoundPlayer(@"C:\Sudoku\media\sound01.wav");
         int [,]arr = new int[9, 9];
+        public int Check = 0;
         public SUDOKU3x3()
         {
             InitializeComponent();
             
 
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            //PlayerStart.PlayLooping();
+            button_play.Enabled = false;
+            Thread t = new Thread(receive);
+            t.IsBackground = true;
+            t.Start();
+            //Control1.byteReceive = new byte[100];
+            //Control1.stm.Read(Control1.byteReceive, 0, 100);
+            //for (int i = 0; i < 9; i++)
+            //    for (int j = 0; j < 9; j++)
+            //    {
+            //        //Chuyển đổi kiểu dữ liệu load mảng lên textbox (=0 bỏ qua)
+            //        TextBox control = (TextBox)this.Controls.Find("textBox" + Convert.ToString(i * 9 + (j + 1)), true).SingleOrDefault();
+            //        if (Convert.ToChar(Control1.byteReceive[i * 9 + j]) != '0')
+            //        {
+            //            control.Text += Convert.ToChar(Control1.byteReceive[i * 9 + j]);
+            //            arr[i, j] = Convert.ToInt32(control.Text);
+            //            control.Enabled = false;
+            //            control.BackColor = Color.Yellow;  
+            //        }
+
+            //    }
+            Addevent();
+
+        }
+        private void receive()
+        {
+            while(true)
+            {
+                try
+                {
+                    Control1.byteReceive = new byte[82];
+                    Control1.stm.Read(Control1.byteReceive, 0, 82);
+                    if (Convert.ToChar(Control1.byteReceive[0]) == 'N')
+                    {
+                        textBox82.Text += "Người chơi ";
+                        int i = 1;
+                        for (; Convert.ToChar(Control1.byteReceive[i]) != '.'; i++)
+                        {
+                            textBox82.Text += Convert.ToChar(Control1.byteReceive[i]);
+                            if (Convert.ToChar(Control1.byteReceive[i + 1]) == '.')
+                            {
+                                textBox82.Text += " đã vào phòng." ;
+                                textBox82.Text += Environment.NewLine;
+                            }
+                        }
+                        if(Control1.byteReceive[i+1]=='x')
+                                    button_play.Enabled = true;
+                    }
+                    else
+                    {
+                        if (Convert.ToChar(Control1.byteReceive[0]) == 'c')
+                        {
+                            for (int i = 0; i < 9; i++)
+                                for (int j = 0; j < 9; j++)
+                                {
+                                    //Chuyển đổi kiểu dữ liệu load mảng lên textbox (=0 bỏ qua)
+                                    TextBox control = (TextBox)this.Controls.Find("textBox" + Convert.ToString(i * 9 + (j + 1)), true).SingleOrDefault();
+                                    if (Convert.ToChar(Control1.byteReceive[i * 9 + j + 1]) != '0')
+                                    {
+                                        control.Text += Convert.ToChar(Control1.byteReceive[i * 9 + j + 1]);
+                                        arr[i, j] = Convert.ToInt32(control.Text);
+                                        control.Enabled = false;
+                                        control.BackColor = Color.Yellow;
+                                    }
+                                }
+                            textBox82.Text += "Chủ phòng đã bắt đầu game"+Environment.NewLine;
+                        }
+                    }                    
+                }
+                catch
+                {
+
+                }
+            }
         }
         int check3(int[,] arr, int x, int y)
         {
@@ -125,12 +202,8 @@ namespace FormGame
 
                                          }
                                     #endregion
-                                    //string Pressed = Convert.ToString(e.KeyChar);  
-                                    //CheckTrungTrenHang(Pressed, temp3);
-                                    //CheckTrungTrenCot(Pressed, temp4);
-                                    //CheckTrungArea(Pressed, temp3, temp4);
                                     control.BackColor = Color.Red;
-                                     control.ForeColor = Color.White;
+                                    control.ForeColor = Color.White;
                                  }
                                  else
                                  {
@@ -267,28 +340,6 @@ namespace FormGame
                 }
         }
         //Khởi tạo form lấy dữ liệu mảng từ server + Thêm event ràng buộc dữ liệu nhập vào+Gửi dữ liệu hợp lệ về server để kiểm tra
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            //PlayerStart.PlayLooping();
-            Control1.byteReceive = new byte[100];
-            Control1.stm.Read(Control1.byteReceive, 0, 100);
-            for (int i = 0; i < 9; i++)
-                for (int j = 0; j < 9; j++)
-                {
-                    //Chuyển đổi kiểu dữ liệu load mảng lên textbox (=0 bỏ qua)
-                    TextBox control = (TextBox)this.Controls.Find("textBox" + Convert.ToString(i * 9 + (j + 1)), true).SingleOrDefault();
-                    if (Convert.ToChar(Control1.byteReceive[i * 9 + j]) != '0')
-                    {
-                        control.Text += Convert.ToChar(Control1.byteReceive[i * 9 + j]);
-                        arr[i, j] = Convert.ToInt32(control.Text);
-                        control.Enabled = false;
-                        control.BackColor = Color.Yellow;  
-                    }
-                     
-                }
-            Addevent();
-            
-        }
         private void SUDOKU3x3_FormClosing(object sender, FormClosingEventArgs e)
         {
             try
@@ -318,7 +369,6 @@ namespace FormGame
                 }
             return result;
         }
-        public int Check = 0;
         private void button1_Click(object sender, EventArgs e)
         {
             if (CheckFinal() == true)
@@ -424,22 +474,18 @@ namespace FormGame
             }            
             this.Close();
         }
-
         private void panel3_Paint(object sender, PaintEventArgs e)
         {
 
         }
-
         private void textBox23_TextChanged(object sender, EventArgs e)
         {
 
         }
-
         private void lbWin_Click(object sender, EventArgs e)
         {
 
         }
-
         private void btnSound_Click(object sender, EventArgs e)
         {
             
@@ -452,6 +498,20 @@ namespace FormGame
             {
                 //PlayerStart.PlayLooping();
                 btnSound.Text = "Tắt Âm thanh";
+            }
+        }
+
+        private void button_play_Click(object sender, EventArgs e)
+        {
+            ASCIIEncoding encode = new ASCIIEncoding();
+            try
+            {
+                Control1.byteSend = encode.GetBytes("!");
+                Control1.stm.Write(Control1.byteSend, 0, Control1.byteSend.Length);
+            }
+            catch
+            {
+
             }
         }
     }

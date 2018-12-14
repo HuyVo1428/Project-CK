@@ -56,3 +56,9 @@ C:\Users\Dell\Desktop\GK_181104\FormServer\obj\Debug\FormServer.csproj.GenerateR
 C:\Users\Dell\Documents\GitHub\Project-CK\GK_181104\FormServer\bin\Debug\FormServer.exe.config
 C:\Users\Dell\Documents\GitHub\Project-CK\GK_181104\FormServer\obj\Debug\FormServer.exe
 C:\Users\Dell\Documents\GitHub\Project-CK\GK_181104\FormServer\obj\Debug\FormServer.pdb
+C:\Users\Dell\Documents\GitHub\Project-CK\GK_181104\FormServer\bin\Debug\FormServer.exe
+C:\Users\Dell\Documents\GitHub\Project-CK\GK_181104\FormServer\bin\Debug\FormServer.pdb
+C:\Users\Dell\Documents\GitHub\Project-CK\GK_181104\FormServer\obj\Debug\FormServer.csprojResolveAssemblyReference.cache
+C:\Users\Dell\Documents\GitHub\Project-CK\GK_181104\FormServer\obj\Debug\FormServer.ServerGame.resources
+C:\Users\Dell\Documents\GitHub\Project-CK\GK_181104\FormServer\obj\Debug\FormServer.Properties.Resources.resources
+C:\Users\Dell\Documents\GitHub\Project-CK\GK_181104\FormServer\obj\Debug\FormServer.csproj.GenerateResource.Cache

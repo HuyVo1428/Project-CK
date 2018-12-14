@@ -201,20 +201,28 @@ namespace FormGame
             Thread.Sleep(200);
             try
             {
-                byteReceive = new byte[100];
-                int k = stm.Read(byteReceive, 0, 100);
+                byteReceive = new byte[82];
+                int k = stm.Read(byteReceive, 0, 82);
                 string result = "";
                 for (int i = 0; i < k; i++)
                 {
                     result += Convert.ToChar(byteReceive[i]);
-                }
+                }                
                 if (result[0] == '1')
-                    MessageBox.Show("Đã tạo phòng "+result);
+                {
+                    string showresult = "" ;
+                    for (int i = 1; result[i]!='@'; i++)
+                    {
+                        showresult += result[i];
+                    }
+                    MessageBox.Show("Tạo phòng thành công " + showresult);
+                }                   
             }
             catch
             {
-
             }
+            SUDOKU3x3 game = new SUDOKU3x3();
+            game.ShowDialog();
         }
         private void button4_Click(object sender, EventArgs e)
         {
@@ -223,15 +231,19 @@ namespace FormGame
             Thread.Sleep(200);
             try
             {
-                byteReceive = new byte[100];
-                int k = stm.Read(byteReceive, 0, 100);
+                byteReceive = new byte[1];
+                int k = stm.Read(byteReceive, 0, 1);
                 string result = "";
                 for (int i = 0; i < k; i++)
                 {
                     result += Convert.ToChar(byteReceive[i]);
                 }
                 if (result[0] == '1')
-                    MessageBox.Show("Đã vào phòng ");
+                {
+                    //MessageBox.Show("Đã vào phòng ");
+                    SUDOKU3x3 game = new SUDOKU3x3();
+                    game.ShowDialog();
+                }
                 else
                 {
                     if (result[0] == '0')
@@ -242,7 +254,7 @@ namespace FormGame
                             MessageBox.Show("Phòng yêu cầu hiện chưa được tạo");
                         else
                             if (result[0] == '2')
-                                MessageBox.Show("Phòng đầy !");
+                            MessageBox.Show("Phòng đầy !");
 
                     }
                 }

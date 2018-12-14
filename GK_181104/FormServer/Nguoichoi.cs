@@ -89,38 +89,21 @@ namespace FormServer
                     {
                         #region Truòng hợp yêu cầu là !(phát sinh mảng)
                         //Check size của mảng
-                        if (checkrequest[1] == '4')
+                        if (ServerGame.phongchoi[room].loaiphong==3)
                         {
-                            arr = new int[16, 16];
+                            arr = new int[9, 9];
                             //Phat sinh mảng
-                            phatsinh16 phatsinh = new phatsinh16();
+                            Phatsinh9 phatsinh = new Phatsinh9();
                             arr = phatsinh.phatsinh();
                             //Gửi mảng về cho Client
                             ASCIIEncoding encode = new ASCIIEncoding();
-                            for (int i = 0; i < 16; i++)
-                                for (int j = 0; j < 16; j++)
-                                {
-                                    if (arr[i, j] < 10)
-                                        sk.Send(encode.GetBytes("o" + Convert.ToString(arr[i, j])));
-                                    else
-                                        sk.Send(encode.GetBytes("t" + Convert.ToString(arr[i, j])));
-                                }
-                        }
-                        else
-                        {
-                            if (checkrequest[1] == '3')
-                            {
-                                arr = new int[9, 9];
-                                //Phat sinh mảng
-                                Phatsinh9 phatsinh = new Phatsinh9();
-                                arr = phatsinh.phatsinh();
-                                //Gửi mảng về cho Client
-                                ASCIIEncoding encode = new ASCIIEncoding();
-                                for (int i = 0; i < 9; i++)
-                                    for (int j = 0; j < 9; j++)
-                                        sk.Send(encode.GetBytes(Convert.ToString(arr[i, j])));
-                            }
-                        }
+                            string send = "c";
+                            for (int i = 0; i < 9; i++)
+                                for (int j = 0; j < 9; j++)
+                                    send += arr[i, j].ToString();
+                            sk.Send(encode.GetBytes(send));
+                            ServerGame.Ngchoi[ServerGame.phongchoi[room].index2].sk.Send(encode.GetBytes(send));
+                        }                        
                     }
 
                     #endregion
@@ -129,7 +112,7 @@ namespace FormServer
                         if (checkrequest[0] == '?')
                         {
                             #region Trường hợp yêu cầu là ?(Kiểm tra)
-                            if (checkrequest[1] == '3')
+                            if (ServerGame.phongchoi[room].loaiphong==3)
                             {
                                 #region Xử lý yêu cầu kiểm tra của Game3x3
                                 if (Convert.ToChar(bytereceive[4]) != '0')
@@ -147,8 +130,10 @@ namespace FormServer
                                     arr[toadox, toadoy] = Convert.ToInt32(temp);
                                     //Check
                                     ASCIIEncoding encode = new ASCIIEncoding();
-                                    sk.Send(encode.GetBytes(Convert.ToString(check3(arr, toadox, toadoy))));
-
+                                    string send = check3(arr, toadox, toadoy).ToString();
+                                    for (; send.Length < 82;)
+                                        send += '@';
+                                    sk.Send(encode.GetBytes(Convert.ToString(send)));
                                 }
                                 //Trường hợp là nút xóa, cập nhật giá trị 0
                                 else
@@ -161,68 +146,6 @@ namespace FormServer
                                     temp += Convert.ToChar(bytereceive[3]);
                                     toadoy = Convert.ToInt32(temp);
                                     arr[toadox, toadoy] = 0;
-                                }
-                                #endregion
-                            }
-
-                            else
-                            {
-                                #region Xử lý yêu cầu kiểm tra của Game4x4
-                                //Xac định vị trí phần tử kiểm tra, cấu trúc request ?4<Toadohang>|<toadocot>|<giatri>x
-                                int toadox, toadoy;
-                                string temp = "";
-                                int i = 2;
-                                //Xác định tọa độ x
-                                for (;;)
-                                {
-                                    if (bytereceive[i] != '|')
-                                    {
-                                        temp += Convert.ToChar(bytereceive[i]);
-                                        i++;
-                                    }
-                                    else
-                                    {
-                                        toadox = Convert.ToInt32(temp);
-                                        i++;
-                                        break;
-                                    }
-                                }
-                                //Xác định tọa độ y
-                                temp = "";
-                                for (;;)
-                                {
-                                    if (bytereceive[i] != '|')
-                                    {
-                                        temp += Convert.ToChar(bytereceive[i]);
-                                        i++;
-                                    }
-                                    else
-                                    {
-                                        toadoy = Convert.ToInt32(temp);
-                                        i++;
-                                        break;
-                                    }
-                                }
-                                //Xác định giá trị
-                                temp = "";
-                                for (;;)
-                                {
-                                    if (bytereceive[i] != 'x')
-                                    {
-                                        temp += Convert.ToChar(bytereceive[i]);
-                                        i++;
-                                    }
-                                    else
-                                    {
-                                        arr[toadox, toadoy] = Convert.ToInt32(temp);
-                                        break;
-                                    }
-                                }
-                                //Check và gửi kết quả cho Client
-                                if (arr[toadox, toadoy] != 0)
-                                {
-                                    ASCIIEncoding encode = new ASCIIEncoding();
-                                    sk.Send(encode.GetBytes(Convert.ToString(check4(arr, toadox, toadoy))));
                                 }
                                 #endregion
                             }
@@ -242,58 +165,53 @@ namespace FormServer
                                 #endregion
                             }
                             else
-                            { 
+                            {
                                 if (checkrequest[0] == 'c')
                                 #region Th yêu cầu là tạo phòng
                                 {
-                                #region Tạo phòng
-                                Random rd = new Random();
-                                while (room == -1 || ServerGame.phongchoi[room].active == 1)
-                                {
-                                    room = rd.Next(0, 16);
-                                    ServerGame.phongchoi[room] = new Room();
-                                }
-                                ServerGame.phongchoi[room].index1 = y;
-                                ServerGame.phongchoi[room].active = 1;
-                                ServerGame.phongchoi[room].count++;
-                                #endregion
-                                #region tạo pass và loại phòng
-                                int i = 1;
-                                for (; checkrequest[i] != '|';i++)
-                                    ServerGame.phongchoi[room].pw += checkrequest[i];
-                                if (checkrequest[i] == '2')
-                                {
-                                    #region Xử lý tạo phòng 2x2
-                                    #endregion
-                                }
-                                else
-                                {
-                                    if (checkrequest[i] == '3')
+                                    #region Tạo phòng
+                                    Random rd = new Random();
+                                    while (room == -1 || ServerGame.phongchoi[room].active == 1)
                                     {
-                                        #region Xử lý tạo phòng 3x3
+                                        room = rd.Next(0, 16);
+                                        ServerGame.phongchoi[room] = new Room();
+                                    }
+                                    ServerGame.phongchoi[room].index1 = y;
+                                    ServerGame.phongchoi[room].active = 1;
+                                    ServerGame.phongchoi[room].count++;
+                                    #endregion
+                                    #region tạo pass và loại phòng
+                                    int i = 1;
+                                    for (; checkrequest[i] != '|'; i++)
+                                        ServerGame.phongchoi[room].pw += checkrequest[i];
+                                    i++;
+                                    if (checkrequest[i] == '2')
+                                    {
+                                        #region Xử lý tạo phòng 2x2
+                                        ServerGame.phongchoi[room].loaiphong = 2;
                                         #endregion
                                     }
                                     else
-                                        if (checkrequest[i] == '4')
                                     {
-                                        #region Xử lý tạo phòng 4x4
-                                        #endregion
+                                        if (checkrequest[i] == '3')
+                                        {
+                                            #region Xử lý tạo phòng 3x3
+                                            ServerGame.phongchoi[room].loaiphong = 3;
+                                            MessageBox.Show(ServerGame.phongchoi[room].loaiphong.ToString());
+                                            #endregion
+                                        }
+
                                     }
-                                }
-                                ASCIIEncoding encode = new ASCIIEncoding();
-                                sk.Send(encode.GetBytes("1 room index= " + room.ToString() + " pw= " +ServerGame.phongchoi[room].pw));
-                                //    Thread.Sleep(500);
-                                //for(int j=0;i<20;j++)
-                                //    {
-                                //        if (ServerGame.Ngchoi[j].sk.Connected)
-                                //            sk.Send(encode.GetBytes("i"+"Phòng "+room.ToString()+ " đã được tạo. Số người hiện tại: "+
-                                //                ServerGame.phongchoi[room].count.ToString()));
-                                //    }
-                                #endregion
+                                    ASCIIEncoding encode = new ASCIIEncoding();
+                                    string send = "1room index: " + room.ToString() + " password: " + ServerGame.phongchoi[room].pw;
+                                    for (; send.Length < 82;)
+                                        send += '@';
+                                    sk.Send(encode.GetBytes(send));
+                                    #endregion
                                 }
                                 #endregion
                                 else
-                                {                                    
+                                {
                                     if (checkrequest[0] == 'j')
                                     #region Th yêu cầu là vào phòng
                                     {
@@ -301,7 +219,7 @@ namespace FormServer
                                         int i = 1;
                                         string tempr = "";
                                         string tempmk = "";
-                                        for(;checkrequest[i]!='|';i++)
+                                        for (; checkrequest[i] != '|'; i++)
                                         {
                                             tempr += checkrequest[i];
                                         }
@@ -313,7 +231,7 @@ namespace FormServer
                                         int result = -1;
                                         if (ServerGame.phongchoi[Convert.ToInt32(tempr)].active == 1
                                             && ServerGame.phongchoi[Convert.ToInt32(tempr)].pw == tempmk
-                                            && ServerGame.phongchoi[Convert.ToInt32(tempr)].count<2)
+                                            && ServerGame.phongchoi[Convert.ToInt32(tempr)].count < 2)
                                         {
                                             result = 1;
                                             room = Convert.ToInt32(tempr);
@@ -332,8 +250,19 @@ namespace FormServer
                                         }
                                         ASCIIEncoding encode = new ASCIIEncoding();
                                         sk.Send(encode.GetBytes(result.ToString()));
+                                        if (result == 1)
+                                        {
+                                            string send = "N" + ServerGame.userlogin[y] + ".x";
+                                            for (; send.Length < 82;)
+                                                send += '@';
+                                            ServerGame.Ngchoi[ServerGame.phongchoi[room].index1].sk.Send(encode.GetBytes(send));
+                                            send = "N" + ServerGame.userlogin[y] + ".";
+                                            for (; send.Length < 82;)
+                                                send += '@';
+                                            ServerGame.Ngchoi[ServerGame.phongchoi[room].index2].sk.Send(encode.GetBytes(send));
+                                        }
                                     }
-                                        
+
                                     #endregion
                                     else
                                     {
@@ -342,9 +271,9 @@ namespace FormServer
                                         {
                                             int check = 0;
                                             #region Check có room chờ hay không
-                                            for (int i=0;i<15;i++)
-                                                if(ServerGame.phongchoi[i].active==1&&ServerGame.phongchoi[i].count<2
-                                                    &&ServerGame.phongchoi[i].pw=="")
+                                            for (int i = 0; i < 15; i++)
+                                                if (ServerGame.phongchoi[i].active == 1 && ServerGame.phongchoi[i].count < 2
+                                                    && ServerGame.phongchoi[i].pw == "")
                                                 {
                                                     check = 1;
                                                     room = i;
@@ -356,7 +285,7 @@ namespace FormServer
                                                 }
                                             #endregion
                                             #region Th k có room nào đang chờ
-                                            if (check==0)
+                                            if (check == 0)
                                             {
                                                 Random rd = new Random();
                                                 while (room == -1 || ServerGame.phongchoi[room].active == 1)

@@ -89,6 +89,7 @@
             this.btnRestart = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnSound = new System.Windows.Forms.Button();
             this.area2 = new System.Windows.Forms.Panel();
             this.area3 = new System.Windows.Forms.Panel();
             this.area5 = new System.Windows.Forms.Panel();
@@ -128,7 +129,8 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.pnNotify = new System.Windows.Forms.Panel();
-            this.btnSound = new System.Windows.Forms.Button();
+            this.textBox82 = new System.Windows.Forms.TextBox();
+            this.button_play = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.area2.SuspendLayout();
             this.area3.SuspendLayout();
@@ -797,7 +799,7 @@
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.button1.Font = new System.Drawing.Font("Candara", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(136, 160);
+            this.button1.Location = new System.Drawing.Point(116, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(147, 30);
             this.button1.TabIndex = 1;
@@ -823,7 +825,7 @@
             this.btnReplay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.btnReplay.Font = new System.Drawing.Font("Candara", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnReplay.ForeColor = System.Drawing.Color.White;
-            this.btnReplay.Location = new System.Drawing.Point(136, 196);
+            this.btnReplay.Location = new System.Drawing.Point(112, 44);
             this.btnReplay.Name = "btnReplay";
             this.btnReplay.Size = new System.Drawing.Size(147, 30);
             this.btnReplay.TabIndex = 3;
@@ -836,7 +838,7 @@
             this.btnLevel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.btnLevel.Font = new System.Drawing.Font("Candara", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLevel.ForeColor = System.Drawing.Color.White;
-            this.btnLevel.Location = new System.Drawing.Point(136, 268);
+            this.btnLevel.Location = new System.Drawing.Point(112, 116);
             this.btnLevel.Name = "btnLevel";
             this.btnLevel.Size = new System.Drawing.Size(147, 30);
             this.btnLevel.TabIndex = 4;
@@ -849,7 +851,7 @@
             this.btnRestart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.btnRestart.Font = new System.Drawing.Font("Candara", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRestart.ForeColor = System.Drawing.Color.White;
-            this.btnRestart.Location = new System.Drawing.Point(136, 232);
+            this.btnRestart.Location = new System.Drawing.Point(112, 80);
             this.btnRestart.Name = "btnRestart";
             this.btnRestart.Size = new System.Drawing.Size(147, 30);
             this.btnRestart.TabIndex = 5;
@@ -862,7 +864,7 @@
             this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.button2.Font = new System.Drawing.Font("Candara", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(136, 308);
+            this.button2.Location = new System.Drawing.Point(112, 154);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(147, 27);
             this.button2.TabIndex = 6;
@@ -876,11 +878,29 @@
             this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.BackgroundImage = global::FormGame.Properties.Resources.bamboo11;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panel1.Controls.Add(this.button_play);
+            this.panel1.Controls.Add(this.textBox82);
+            this.panel1.Controls.Add(this.button2);
             this.panel1.Controls.Add(this.btnSound);
+            this.panel1.Controls.Add(this.btnLevel);
+            this.panel1.Controls.Add(this.btnRestart);
+            this.panel1.Controls.Add(this.btnReplay);
             this.panel1.Location = new System.Drawing.Point(-5, -1);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(200, 639);
+            this.panel1.Size = new System.Drawing.Size(323, 639);
             this.panel1.TabIndex = 7;
+            // 
+            // btnSound
+            // 
+            this.btnSound.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.btnSound.Font = new System.Drawing.Font("Candara", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSound.Location = new System.Drawing.Point(11, 6);
+            this.btnSound.Name = "btnSound";
+            this.btnSound.Size = new System.Drawing.Size(113, 32);
+            this.btnSound.TabIndex = 56;
+            this.btnSound.Text = "Tắt Âm thanh";
+            this.btnSound.UseVisualStyleBackColor = false;
+            this.btnSound.Click += new System.EventHandler(this.btnSound_Click);
             // 
             // area2
             // 
@@ -1422,17 +1442,24 @@
             this.pnNotify.TabIndex = 56;
             this.pnNotify.Visible = false;
             // 
-            // btnSound
+            // textBox82
             // 
-            this.btnSound.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.btnSound.Font = new System.Drawing.Font("Candara", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSound.Location = new System.Drawing.Point(11, 6);
-            this.btnSound.Name = "btnSound";
-            this.btnSound.Size = new System.Drawing.Size(113, 32);
-            this.btnSound.TabIndex = 56;
-            this.btnSound.Text = "Tắt Âm thanh";
-            this.btnSound.UseVisualStyleBackColor = false;
-            this.btnSound.Click += new System.EventHandler(this.btnSound_Click);
+            this.textBox82.Location = new System.Drawing.Point(24, 291);
+            this.textBox82.Multiline = true;
+            this.textBox82.Name = "textBox82";
+            this.textBox82.ReadOnly = true;
+            this.textBox82.Size = new System.Drawing.Size(296, 210);
+            this.textBox82.TabIndex = 57;
+            // 
+            // button_play
+            // 
+            this.button_play.Location = new System.Drawing.Point(100, 207);
+            this.button_play.Name = "button_play";
+            this.button_play.Size = new System.Drawing.Size(145, 76);
+            this.button_play.TabIndex = 58;
+            this.button_play.Text = "Play";
+            this.button_play.UseVisualStyleBackColor = true;
+            this.button_play.Click += new System.EventHandler(this.button_play_Click);
             // 
             // SUDOKU3x3
             // 
@@ -1442,10 +1469,6 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImage = global::FormGame.Properties.Resources.background;
             this.ClientSize = new System.Drawing.Size(1007, 630);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.btnRestart);
-            this.Controls.Add(this.btnLevel);
-            this.Controls.Add(this.btnReplay);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel3);
@@ -1460,6 +1483,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SUDOKU3x3_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.area2.ResumeLayout(false);
             this.area2.PerformLayout();
             this.area3.ResumeLayout(false);
@@ -1588,6 +1612,8 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel pnNotify;
         private System.Windows.Forms.Button btnSound;
+        private System.Windows.Forms.Button button_play;
+        private System.Windows.Forms.TextBox textBox82;
     }
 }
 

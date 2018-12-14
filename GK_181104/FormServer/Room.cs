@@ -12,12 +12,14 @@ namespace FormServer
         public int count;
         public int index1, index2;
         public string pw="";
+        public int loaiphong;
         public Room()
         {
             active = 0;
             count = 0;
             index1 = -1;
             index2 = -1;
+            loaiphong = 0;
         }        
     }
 }
