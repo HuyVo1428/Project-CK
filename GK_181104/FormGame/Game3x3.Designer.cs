@@ -89,6 +89,8 @@
             this.btnRestart = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button_play = new System.Windows.Forms.Button();
+            this.textBox82 = new System.Windows.Forms.TextBox();
             this.btnSound = new System.Windows.Forms.Button();
             this.area2 = new System.Windows.Forms.Panel();
             this.area3 = new System.Windows.Forms.Panel();
@@ -129,8 +131,7 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.pnNotify = new System.Windows.Forms.Panel();
-            this.textBox82 = new System.Windows.Forms.TextBox();
-            this.button_play = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.area2.SuspendLayout();
             this.area3.SuspendLayout();
@@ -878,6 +879,7 @@
             this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.BackgroundImage = global::FormGame.Properties.Resources.bamboo11;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.button_play);
             this.panel1.Controls.Add(this.textBox82);
             this.panel1.Controls.Add(this.button2);
@@ -889,6 +891,25 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(323, 639);
             this.panel1.TabIndex = 7;
+            // 
+            // button_play
+            // 
+            this.button_play.Location = new System.Drawing.Point(100, 207);
+            this.button_play.Name = "button_play";
+            this.button_play.Size = new System.Drawing.Size(145, 76);
+            this.button_play.TabIndex = 58;
+            this.button_play.Text = "Play";
+            this.button_play.UseVisualStyleBackColor = true;
+            this.button_play.Click += new System.EventHandler(this.button_play_Click);
+            // 
+            // textBox82
+            // 
+            this.textBox82.Location = new System.Drawing.Point(24, 291);
+            this.textBox82.Multiline = true;
+            this.textBox82.Name = "textBox82";
+            this.textBox82.ReadOnly = true;
+            this.textBox82.Size = new System.Drawing.Size(296, 210);
+            this.textBox82.TabIndex = 57;
             // 
             // btnSound
             // 
@@ -1442,24 +1463,15 @@
             this.pnNotify.TabIndex = 56;
             this.pnNotify.Visible = false;
             // 
-            // textBox82
+            // label1
             // 
-            this.textBox82.Location = new System.Drawing.Point(24, 291);
-            this.textBox82.Multiline = true;
-            this.textBox82.Name = "textBox82";
-            this.textBox82.ReadOnly = true;
-            this.textBox82.Size = new System.Drawing.Size(296, 210);
-            this.textBox82.TabIndex = 57;
-            // 
-            // button_play
-            // 
-            this.button_play.Location = new System.Drawing.Point(100, 207);
-            this.button_play.Name = "button_play";
-            this.button_play.Size = new System.Drawing.Size(145, 76);
-            this.button_play.TabIndex = 58;
-            this.button_play.Text = "Play";
-            this.button_play.UseVisualStyleBackColor = true;
-            this.button_play.Click += new System.EventHandler(this.button_play_Click);
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(7, 46);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(79, 24);
+            this.label1.TabIndex = 59;
+            this.label1.Text = "ROOM:";
             // 
             // SUDOKU3x3
             // 
@@ -1614,6 +1626,7 @@
         private System.Windows.Forms.Button btnSound;
         private System.Windows.Forms.Button button_play;
         private System.Windows.Forms.TextBox textBox82;
+        private System.Windows.Forms.Label label1;
     }
 }
 

@@ -15,7 +15,9 @@ namespace FormGame
     {
         //System.Media.SoundPlayer PlayerStart = new System.Media.SoundPlayer(@"C:\Sudoku\media\sound01.wav");
         int [,]arr = new int[9, 9];
+        string checkresult = "";
         public int Check = 0;
+        public static int room;
         public SUDOKU3x3()
         {
             InitializeComponent();
@@ -26,25 +28,10 @@ namespace FormGame
         {
             //PlayerStart.PlayLooping();
             button_play.Enabled = false;
+            label1.Text = "ROOM:" + room.ToString();
             Thread t = new Thread(receive);
             t.IsBackground = true;
-            t.Start();
-            //Control1.byteReceive = new byte[100];
-            //Control1.stm.Read(Control1.byteReceive, 0, 100);
-            //for (int i = 0; i < 9; i++)
-            //    for (int j = 0; j < 9; j++)
-            //    {
-            //        //Chuyển đổi kiểu dữ liệu load mảng lên textbox (=0 bỏ qua)
-            //        TextBox control = (TextBox)this.Controls.Find("textBox" + Convert.ToString(i * 9 + (j + 1)), true).SingleOrDefault();
-            //        if (Convert.ToChar(Control1.byteReceive[i * 9 + j]) != '0')
-            //        {
-            //            control.Text += Convert.ToChar(Control1.byteReceive[i * 9 + j]);
-            //            arr[i, j] = Convert.ToInt32(control.Text);
-            //            control.Enabled = false;
-            //            control.BackColor = Color.Yellow;  
-            //        }
-
-            //    }
+            t.Start();            
             Addevent();
 
         }
@@ -83,13 +70,39 @@ namespace FormGame
                                     TextBox control = (TextBox)this.Controls.Find("textBox" + Convert.ToString(i * 9 + (j + 1)), true).SingleOrDefault();
                                     if (Convert.ToChar(Control1.byteReceive[i * 9 + j + 1]) != '0')
                                     {
-                                        control.Text += Convert.ToChar(Control1.byteReceive[i * 9 + j + 1]);
+                                        control.Text += Convert.ToChar(Control1.byteReceive[i * 9  + j + 1]);
                                         arr[i, j] = Convert.ToInt32(control.Text);
                                         control.Enabled = false;
                                         control.BackColor = Color.Yellow;
                                     }
                                 }
                             textBox82.Text += "Chủ phòng đã bắt đầu game"+Environment.NewLine;
+                        }
+                        else
+                        {
+                            if (Convert.ToChar(Control1.byteReceive[0]) == 'r')
+                            {
+                                string temp="";
+                                temp += Convert.ToChar(Control1.byteReceive[1]);
+                                checkresult = temp;
+                            }
+                            else
+                            {
+                                if (Convert.ToChar(Control1.byteReceive[0]) == 'o')
+                                {
+                                    string aa = "";
+                                    aa += Convert.ToChar(Control1.byteReceive[1]);
+                                    string bb = "";
+                                    bb += Convert.ToChar(Control1.byteReceive[2]);
+                                    int x = Convert.ToInt32(aa);
+                                    int y = Convert.ToInt32(bb);
+                                    TextBox control = (TextBox)this.Controls.Find("textBox" + Convert.ToString((x*9)+(y+1)), true).SingleOrDefault();
+                                    control.Text = "";
+                                    control.Text += Convert.ToChar(Control1.byteReceive[3]);
+                                    control.BackColor = Color.Blue;
+                                }
+
+                            }
                         }
                     }                    
                 }
@@ -156,117 +169,22 @@ namespace FormGame
                              {
                                  Control1.byteSend = encode.GetBytes(test);
                                  Control1.stm.Write(Control1.byteSend, 0, Control1.byteSend.Length);
-                                //Nhận kết quả kiểm tra từ server
-                                 Control1.byteReceive = new byte[100];
-                                 int k = Control1.stm.Read(Control1.byteReceive, 0, 100);
-                                 test = "";
-                                 for (int h = 0; h < k; h++)
-                                 {
-                                     test += Convert.ToChar(Control1.byteReceive[h]);
-                                 }
-                                 #region Xu ly khi ô nhập bị sai
-
-                                 if (test == "0")
+                                 //Nhận kết quả kiểm tra từ server
+                                 Thread.Sleep(150);                                 
+                                 #region Xu ly khi ô nhập
+                                 if (checkresult == "0")
                                  {
                                      control.BackColor = Color.Red;
-                                     control.ForeColor = Color.White;
-                                    #region doi mau các ô sai liên quan
-                                    for (int kt = 0; kt < 9; kt++)
-                                     {
-                                         TextBox kiemtra = (TextBox)this.Controls.Find("textBox" + (temp3 * 9 + (kt + 1)).ToString(), true).SingleOrDefault();
-                                         if (arr[temp3, kt] == arr[temp3, temp4] && kt != temp4 && kiemtra.Enabled)
-                                         {
-                                             kiemtra.BackColor = Color.Red;
-                                             kiemtra.ForeColor = Color.White;
-                                         }
-                                     }
-                                     for (int kt = 0; kt < 9; kt++)
-                                     {
-                                         TextBox kiemtra = (TextBox)this.Controls.Find("textBox" + (kt * 9 + (temp4 + 1)).ToString(), true).SingleOrDefault();
-                                         if (arr[kt, temp4] == arr[temp3, temp4] && kt != temp3&& kiemtra.Enabled)
-                                         {
-                                             kiemtra.BackColor = Color.Red;
-                                             kiemtra.ForeColor = Color.White;
-                                         }
-                                     }
-
-                                     for (int hangocon = 3 * (temp3 / 3); hangocon < 3 * (temp3 / 3) + 3; hangocon++)
-                                         for (int cotocon = 3 * (temp4 / 3); cotocon < 3 * (temp4 / 3) + 3; cotocon++)
-                                         {
-                                             TextBox kiemtra = (TextBox)this.Controls.Find("textBox" + (hangocon * 9 + (cotocon + 1)).ToString(), true).SingleOrDefault();
-                                             if (arr[hangocon, cotocon] == arr[temp3, temp4] && hangocon != temp3 && cotocon != temp4 && kiemtra.Enabled)
-                                             {
-                                                 kiemtra.BackColor = Color.Red;
-                                                 kiemtra.ForeColor = Color.White;
-                                             }
-
-                                         }
-                                    #endregion
-                                    control.BackColor = Color.Red;
-                                    control.ForeColor = Color.White;
                                  }
                                  else
                                  {
-                                     if (control.Enabled == false)
-                                     {
-                                         control.ForeColor = Color.Yellow;
-                                         control.BackColor = Color.Black;
-                                     }
-                                     else
+                                     if (checkresult == "1")
                                      {
                                          control.ForeColor = Color.White;
                                          control.BackColor = Color.Green;
                                      }
                                  }
                                  #endregion
-                                 #region đổi màu các ô liên quan nếu nó đã đúng
-                                 for (int kt = 0; kt < 9; kt++)
-                                 {
-                                     TextBox kiemtra = (TextBox)this.Controls.Find("textBox" + (temp3 * 9 + (kt + 1)).ToString(), true).SingleOrDefault();
-                                     if (kiemtra.BackColor == Color.Red)
-                                     {
-                                         if (check3(arr, temp3, kt) == 1)
-                                         {
-                                             if (kiemtra.Enabled == false)
-                                             {
-                                                 kiemtra.ForeColor = Color.Yellow;
-                                                 kiemtra.BackColor = Color.Black;
-                                             }
-                                             else
-                                             {
-                                                 kiemtra.ForeColor = Color.White;
-                                                 kiemtra.BackColor = Color.Green;
-                                             }
-                                         
-                                         }
-                                     }
-                                 }
-                                 for (int kt = 0; kt < 9; kt++)
-                                 {
-                                     TextBox kiemtra = (TextBox)this.Controls.Find("textBox" + (kt * 9 + (temp4 + 1)).ToString(), true).SingleOrDefault();
-                                     if (kiemtra.BackColor == Color.Red)
-                                     {
-                                         if (check3(arr, kt, temp4) == 1)
-                                         {
-                                             kiemtra.ForeColor = Color.White;
-                                             kiemtra.BackColor = Color.Green;
-                                         }
-                                     }
-                                 }
-                                 for (int hangocon = 3 * (temp3 / 3); hangocon < 3 * (temp3 / 3) + 3; hangocon++)
-                                     for (int cotocon = 3 * (temp4 / 3); cotocon < 3 * (temp4 / 3) + 3; cotocon++)
-                                     {
-                                         TextBox kiemtra = (TextBox)this.Controls.Find("textBox" + (hangocon * 9 + (cotocon + 1)).ToString(), true).SingleOrDefault();
-                                         if (kiemtra.BackColor == Color.Red)
-                                             if (check3(arr, hangocon, cotocon) == 1)
-                                             {
-                                                 kiemtra.ForeColor = Color.White;
-                                                 kiemtra.BackColor = Color.Green;
-                                             }
-
-                                     }
-                                #endregion
-
                             }
                              catch (Exception)
                              {
@@ -277,7 +195,6 @@ namespace FormGame
                          #endregion
                          if (e.KeyChar==Convert.ToChar(8))
                          {
-                             #region xử lý khi nhập nút xóa
                              #region gửi dữ liệu update về cho server
                              e.Handled = false;
                              control.BackColor = Color.White;
@@ -294,45 +211,6 @@ namespace FormGame
                              {
 
                              }
-                             #endregion
-                             #region Đổi màu các ô sai liên quan nếu nó đã đúng
-                             for (int kt = 0; kt < 9; kt++)
-                             {
-                                 TextBox kiemtra = (TextBox)this.Controls.Find("textBox" + (temp3 * 9 + (kt + 1)).ToString(), true).SingleOrDefault();
-                                 if (kiemtra.BackColor == Color.Red)
-                                 {
-                                     if (check3(arr, temp3, kt) == 1)
-                                     {
-                                         kiemtra.ForeColor = Color.White;
-                                         kiemtra.BackColor = Color.Green;
-                                     }
-                                 }
-                             }
-                             for (int kt = 0; kt < 9; kt++)
-                             {
-                                 TextBox kiemtra = (TextBox)this.Controls.Find("textBox" + (kt * 9 + (temp4 + 1)).ToString(), true).SingleOrDefault();
-                                 if (kiemtra.BackColor == Color.Red)
-                                 {
-                                     if (check3(arr, kt, temp4) == 1)
-                                     {
-                                         kiemtra.ForeColor = Color.White;
-                                         kiemtra.BackColor = Color.Green;
-                                     }
-                                 }
-                             }
-                             for (int hangocon = 3 * (temp3 / 3); hangocon < 3 * (temp3 / 3) + 3; hangocon++)
-                                 for (int cotocon = 3 * (temp4 / 3); cotocon < 3 * (temp4 / 3) + 3; cotocon++)
-                                 {
-                                     TextBox kiemtra = (TextBox)this.Controls.Find("textBox" + (hangocon * 9 + (cotocon + 1)).ToString(), true).SingleOrDefault();
-                                     if (kiemtra.BackColor == Color.Red)
-                                         if (check3(arr, hangocon, cotocon) == 1)
-                                         {
-                                             kiemtra.ForeColor = Color.White;
-                                             kiemtra.BackColor = Color.Green;
-                                         }
-                                 }
-                             #endregion
-
                              #endregion
                          }
                      };

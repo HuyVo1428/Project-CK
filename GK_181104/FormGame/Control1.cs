@@ -19,10 +19,12 @@ namespace FormGame
         #region Khai báo
         System.Media.SoundPlayer PlayerStart = new System.Media.SoundPlayer(@"C:\Sudoku\media\sound01.wav");
         public  static TcpClient tcpclnt;
-        public static Stream stm;
+        public static TcpClient tcpclnt2;
+        public static Stream stm,stm2;
         public static byte[] byteSend;
         public static byte[] byteReceive;
         Form game=new SUDOKU3x3();
+        Thread t;
         #endregion
         #region Load 
         public Control1()
@@ -48,12 +50,38 @@ namespace FormGame
             //Khởi tạo kết nối
             tcpclnt = new TcpClient();
             tcpclnt.Connect("127.0.0.1", 13000);
+            tcpclnt2 = new TcpClient();
+            tcpclnt2.Connect("127.0.0.1", 13001);
             stm = tcpclnt.GetStream();
+            stm2 = tcpclnt2.GetStream();
         }
         /*Nút Login-(Khởi tạo kết nối + Gửi username, password + Check kết quả login từ server 
         + Chuyển màn hình: Ẩn cửa texbox nút dùng login, hiện nút NEW, EXIT)*/
         #endregion
         #region Xử lý event
+        private void receive()
+        {
+            while (true)
+            {
+                try
+                {
+                    byte[] byteReceive2 = new byte[82];
+                    Control1.stm2.Read(byteReceive2, 0, 82);
+                    if (Convert.ToChar(byteReceive2[0]) == 'i')
+                    {
+                        for (int i = 1; byteReceive2[i] != '@'; i++)
+                        {
+                            textBox1.Text += Convert.ToChar(byteReceive2[i]);
+                        }
+                        textBox1.Text += Environment.NewLine;
+                    }
+
+                }
+                catch
+                {
+                }
+            }
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             try
@@ -95,9 +123,13 @@ namespace FormGame
                         button4.Visible = true;
                         button2.Visible = true;
                         button5.Visible = true;
+                        textBox1.Visible = true;
                         label1.Visible = false;
                         label2.Visible = false;
                         lbLogin.Text = "Xin chào, " + usernamebox.Text;
+                        t = new Thread(receive);
+                        t.IsBackground = true;
+                        t.Start();
                     }
                     else
                     {
@@ -193,12 +225,12 @@ namespace FormGame
                 btnSound.Text = "Tắt Âm thanh";
             }
         }
-
         private void button3_Click(object sender, EventArgs e)
         {
             Taophong tp = new Taophong();
             tp.ShowDialog();
             Thread.Sleep(200);
+            int room=0;
             try
             {
                 byteReceive = new byte[82];
@@ -215,13 +247,20 @@ namespace FormGame
                     {
                         showresult += result[i];
                     }
-                    MessageBox.Show("Tạo phòng thành công " + showresult);
-                }                   
+                    MessageBox.Show("Tạo phòng thành công " + showresult);                   
+                }
+                string numroom = "";
+                for (int i = 13;result[i]!=' ';i++)
+                {
+                    numroom += result[i];
+                }
+                room = Convert.ToInt32(numroom);
             }
             catch
             {
             }
             SUDOKU3x3 game = new SUDOKU3x3();
+            SUDOKU3x3.room = room;
             game.ShowDialog();
         }
         private void button4_Click(object sender, EventArgs e)
@@ -231,8 +270,8 @@ namespace FormGame
             Thread.Sleep(200);
             try
             {
-                byteReceive = new byte[1];
-                int k = stm.Read(byteReceive, 0, 1);
+                byteReceive = new byte[82];
+                int k = stm.Read(byteReceive, 0, 82);
                 string result = "";
                 for (int i = 0; i < k; i++)
                 {
@@ -240,8 +279,17 @@ namespace FormGame
                 }
                 if (result[0] == '1')
                 {
+
                     //MessageBox.Show("Đã vào phòng ");
                     SUDOKU3x3 game = new SUDOKU3x3();
+                    int room;
+                    string numroom = "";
+                    for (int i = 1; result[i] != '@'; i++)
+                    {
+                        numroom += result[i];
+                    }
+                    room = Convert.ToInt32(numroom);
+                    SUDOKU3x3.room = room;
                     game.ShowDialog();
                 }
                 else
@@ -280,15 +328,26 @@ namespace FormGame
             Thread.Sleep(500);
             try
             {
-                byteReceive = new byte[100];
-                int k = stm.Read(byteReceive, 0, 100);
+                byteReceive = new byte[82];
+                int k = stm.Read(byteReceive, 0, 82);
                 string result = "";
                 for (int i = 0; i < k; i++)
                 {
                     result += Convert.ToChar(byteReceive[i]);
                 }
                 if (result[0] == '1')
-                    MessageBox.Show("Đã vào phòng "+ result);                
+                {
+                    SUDOKU3x3 game = new SUDOKU3x3();
+                    int room;
+                    string numroom = "";
+                    for (int i = 1; result[i] != '@'; i++)
+                    {
+                        numroom += result[i];
+                    }
+                    room = Convert.ToInt32(numroom);
+                    SUDOKU3x3.room = room;
+                    game.ShowDialog();
+                }
             }
             catch
             {

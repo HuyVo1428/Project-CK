@@ -16,7 +16,7 @@ namespace FormServer
 {
     public partial class Nguoichoi
     {
-        public Socket sk;
+        public Socket sk,sk2;
         public int room;
         public string username;
         public int[,] arr;
@@ -130,7 +130,20 @@ namespace FormServer
                                     arr[toadox, toadoy] = Convert.ToInt32(temp);
                                     //Check
                                     ASCIIEncoding encode = new ASCIIEncoding();
-                                    string send = check3(arr, toadox, toadoy).ToString();
+                                    string send = "o" + toadox.ToString() + toadoy.ToString() + arr[toadox, toadoy].ToString();
+                                    for (; send.Length < 82;)
+                                        send += '@';
+                                    if (y != ServerGame.phongchoi[room].index2)
+                                    {
+                                        ServerGame.Ngchoi[ServerGame.phongchoi[room].index2].sk.Send(encode.GetBytes(Convert.ToString(send)));
+                                        send = "r" + check3(arr, toadox, toadoy).ToString();
+                                    }
+                                    else
+                                    {
+
+                                        ServerGame.Ngchoi[ServerGame.phongchoi[room].index1].sk.Send(encode.GetBytes(Convert.ToString(send)));
+                                        send = "r" + check3(arr, toadox, toadoy).ToString();
+                                    }
                                     for (; send.Length < 82;)
                                         send += '@';
                                     sk.Send(encode.GetBytes(Convert.ToString(send)));
@@ -197,7 +210,7 @@ namespace FormServer
                                         {
                                             #region Xử lý tạo phòng 3x3
                                             ServerGame.phongchoi[room].loaiphong = 3;
-                                            MessageBox.Show(ServerGame.phongchoi[room].loaiphong.ToString());
+                                            //MessageBox.Show(ServerGame.phongchoi[room].loaiphong.ToString());
                                             #endregion
                                         }
 
@@ -207,6 +220,14 @@ namespace FormServer
                                     for (; send.Length < 82;)
                                         send += '@';
                                     sk.Send(encode.GetBytes(send));
+                                    send = "iRoom "+room.ToString()+ " has created. "+ "Number user: "+ServerGame.phongchoi[room].count.ToString()+".";
+                                    for (; send.Length < 82;)
+                                        send += '@';
+                                    for (int j = 0; j < 20; j++)
+                                    {
+                                        if (ServerGame.Ngchoi[j].username != "")
+                                            ServerGame.Ngchoi[j].sk2.Send(encode.GetBytes(send));
+                                    }
                                     #endregion
                                 }
                                 #endregion
@@ -249,10 +270,13 @@ namespace FormServer
                                             }
                                         }
                                         ASCIIEncoding encode = new ASCIIEncoding();
-                                        sk.Send(encode.GetBytes(result.ToString()));
+                                        string send = result.ToString()+room.ToString();
+                                        for (; send.Length < 82;)
+                                            send += '@';
+                                        sk.Send(encode.GetBytes(send));
                                         if (result == 1)
                                         {
-                                            string send = "N" + ServerGame.userlogin[y] + ".x";
+                                            send = "N" + ServerGame.userlogin[y] + ".x";
                                             for (; send.Length < 82;)
                                                 send += '@';
                                             ServerGame.Ngchoi[ServerGame.phongchoi[room].index1].sk.Send(encode.GetBytes(send));
@@ -260,6 +284,14 @@ namespace FormServer
                                             for (; send.Length < 82;)
                                                 send += '@';
                                             ServerGame.Ngchoi[ServerGame.phongchoi[room].index2].sk.Send(encode.GetBytes(send));
+                                            send = "iRoom " + room.ToString() + " has Full.";
+                                            for (; send.Length < 82;)
+                                                send += '@';
+                                            for (int j = 0; j < 20; j++)
+                                            {
+                                                if (ServerGame.Ngchoi[j].username != "")
+                                                    ServerGame.Ngchoi[j].sk2.Send(encode.GetBytes(send));
+                                            }
                                         }
                                     }
 
@@ -280,7 +312,26 @@ namespace FormServer
                                                     ServerGame.phongchoi[room].index2 = y;
                                                     ServerGame.phongchoi[room].count++;
                                                     ASCIIEncoding encode = new ASCIIEncoding();
-                                                    sk.Send(encode.GetBytes(room.ToString()));
+                                                    string send = "1" + room.ToString();
+                                                    for (; send.Length < 82;)
+                                                        send += '@';
+                                                    sk.Send(encode.GetBytes(send));
+                                                    send = "N" + ServerGame.userlogin[y] + ".x";
+                                                    for (; send.Length < 82;)
+                                                        send += '@';
+                                                    ServerGame.Ngchoi[ServerGame.phongchoi[room].index1].sk.Send(encode.GetBytes(send));
+                                                    send = "N" + ServerGame.userlogin[y] + ".";
+                                                    for (; send.Length < 82;)
+                                                        send += '@';
+                                                    sk.Send(encode.GetBytes(send));
+                                                    send = "iRoom " + room.ToString() + " has Full.";
+                                                    for (; send.Length < 82;)
+                                                        send += '@';
+                                                    for (int j = 0; j < 20; j++)
+                                                    {
+                                                        if (ServerGame.Ngchoi[j].username != "")
+                                                            ServerGame.Ngchoi[j].sk2.Send(encode.GetBytes(send));
+                                                    }
                                                     break;
                                                 }
                                             #endregion
@@ -296,9 +347,21 @@ namespace FormServer
                                                 ServerGame.phongchoi[room].index1 = y;
                                                 ServerGame.phongchoi[room].active = 1;
                                                 ServerGame.phongchoi[room].count++;
-                                                //Thêm xử lý tạo màn 2x2
+                                                ServerGame.phongchoi[room].loaiphong = 3;
                                                 ASCIIEncoding encode = new ASCIIEncoding();
-                                                sk.Send(encode.GetBytes(room.ToString()));
+                                                string send = "1" + room.ToString();
+                                                for (; send.Length < 82;)
+                                                    send += '@';
+                                                sk.Send(encode.GetBytes(send));
+                                                send = "iRoom " + room.ToString() + " has created. " + "Number user: " + ServerGame.phongchoi[room].count.ToString() + ".";
+                                                for (; send.Length < 82;)
+                                                    send += '@';
+                                                for (int j = 0; j < 20; j++)
+                                                {
+                                                    if (ServerGame.Ngchoi[j].username != "")
+                                                        ServerGame.Ngchoi[j].sk2.Send(encode.GetBytes(send));
+                                                }
+                                                
                                             }
                                             #endregion
                                         }
@@ -309,7 +372,6 @@ namespace FormServer
                         }
                         #endregion
                     }
-
                 }
                 catch
                 {
