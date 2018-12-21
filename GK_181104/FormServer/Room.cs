@@ -13,6 +13,7 @@ namespace FormServer
         public int index1, index2;
         public string pw="";
         public int loaiphong;
+        public int[,] arr;
         public Room()
         {
             active = 0;
@@ -20,6 +21,7 @@ namespace FormServer
             index1 = -1;
             index2 = -1;
             loaiphong = 0;
+            arr = new int[9, 9];
         }        
     }
 }

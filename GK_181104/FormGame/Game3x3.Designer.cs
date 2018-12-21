@@ -82,13 +82,12 @@
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.lbWin = new System.Windows.Forms.Label();
-            this.btnReplay = new System.Windows.Forms.Button();
-            this.btnLevel = new System.Windows.Forms.Button();
-            this.btnRestart = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.button_play = new System.Windows.Forms.Button();
             this.textBox82 = new System.Windows.Forms.TextBox();
             this.btnSound = new System.Windows.Forms.Button();
@@ -131,7 +130,6 @@
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.pnNotify = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.area2.SuspendLayout();
             this.area3.SuspendLayout();
@@ -795,19 +793,6 @@
             this.textBox4.TabIndex = 3;
             this.textBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.button1.Font = new System.Drawing.Font("Candara", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(116, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(147, 30);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Kiểm tra";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
             // lbWin
             // 
             this.lbWin.AutoSize = true;
@@ -821,51 +806,12 @@
             this.lbWin.UseCompatibleTextRendering = true;
             this.lbWin.Click += new System.EventHandler(this.lbWin_Click);
             // 
-            // btnReplay
-            // 
-            this.btnReplay.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.btnReplay.Font = new System.Drawing.Font("Candara", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReplay.ForeColor = System.Drawing.Color.White;
-            this.btnReplay.Location = new System.Drawing.Point(112, 44);
-            this.btnReplay.Name = "btnReplay";
-            this.btnReplay.Size = new System.Drawing.Size(147, 30);
-            this.btnReplay.TabIndex = 3;
-            this.btnReplay.Text = "Chơi lại";
-            this.btnReplay.UseVisualStyleBackColor = false;
-            this.btnReplay.Click += new System.EventHandler(this.btnReplay_Click);
-            // 
-            // btnLevel
-            // 
-            this.btnLevel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.btnLevel.Font = new System.Drawing.Font("Candara", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLevel.ForeColor = System.Drawing.Color.White;
-            this.btnLevel.Location = new System.Drawing.Point(112, 116);
-            this.btnLevel.Name = "btnLevel";
-            this.btnLevel.Size = new System.Drawing.Size(147, 30);
-            this.btnLevel.TabIndex = 4;
-            this.btnLevel.Text = "Tăng độ khó";
-            this.btnLevel.UseVisualStyleBackColor = false;
-            this.btnLevel.Click += new System.EventHandler(this.btnLevel_Click);
-            // 
-            // btnRestart
-            // 
-            this.btnRestart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.btnRestart.Font = new System.Drawing.Font("Candara", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRestart.ForeColor = System.Drawing.Color.White;
-            this.btnRestart.Location = new System.Drawing.Point(112, 80);
-            this.btnRestart.Name = "btnRestart";
-            this.btnRestart.Size = new System.Drawing.Size(147, 30);
-            this.btnRestart.TabIndex = 5;
-            this.btnRestart.Text = "Đổi Sudoku khác";
-            this.btnRestart.UseVisualStyleBackColor = false;
-            this.btnRestart.Click += new System.EventHandler(this.btnRestart_Click);
-            // 
             // button2
             // 
             this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
             this.button2.Font = new System.Drawing.Font("Candara", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(112, 154);
+            this.button2.Location = new System.Drawing.Point(149, 13);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(147, 27);
             this.button2.TabIndex = 6;
@@ -879,18 +825,47 @@
             this.panel1.BackColor = System.Drawing.Color.Transparent;
             this.panel1.BackgroundImage = global::FormGame.Properties.Resources.bamboo11;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.button_play);
             this.panel1.Controls.Add(this.textBox82);
             this.panel1.Controls.Add(this.button2);
             this.panel1.Controls.Add(this.btnSound);
-            this.panel1.Controls.Add(this.btnLevel);
-            this.panel1.Controls.Add(this.btnRestart);
-            this.panel1.Controls.Add(this.btnReplay);
             this.panel1.Location = new System.Drawing.Point(-5, -1);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(323, 639);
             this.panel1.TabIndex = 7;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(7, 118);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(65, 24);
+            this.label3.TabIndex = 61;
+            this.label3.Text = "TIME:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(7, 80);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(63, 24);
+            this.label2.TabIndex = 60;
+            this.label2.Text = "Point:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(7, 46);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(79, 24);
+            this.label1.TabIndex = 59;
+            this.label1.Text = "ROOM:";
             // 
             // button_play
             // 
@@ -1463,16 +1438,6 @@
             this.pnNotify.TabIndex = 56;
             this.pnNotify.Visible = false;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(7, 46);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(79, 24);
-            this.label1.TabIndex = 59;
-            this.label1.Text = "ROOM:";
-            // 
             // SUDOKU3x3
             // 
             this.AllowDrop = true;
@@ -1481,7 +1446,6 @@
             this.BackColor = System.Drawing.SystemColors.Control;
             this.BackgroundImage = global::FormGame.Properties.Resources.background;
             this.ClientSize = new System.Drawing.Size(1007, 630);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
@@ -1492,7 +1456,6 @@
             this.Name = "SUDOKU3x3";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sudoku";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SUDOKU3x3_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -1577,11 +1540,7 @@
         private System.Windows.Forms.TextBox textBox6;
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label lbWin;
-        private System.Windows.Forms.Button btnReplay;
-        private System.Windows.Forms.Button btnLevel;
-        private System.Windows.Forms.Button btnRestart;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel area2;
@@ -1627,6 +1586,8 @@
         private System.Windows.Forms.Button button_play;
         private System.Windows.Forms.TextBox textBox82;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
     }
 }
 

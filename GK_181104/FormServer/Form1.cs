@@ -29,6 +29,7 @@ namespace FormServer
         public static string[] userlogin;
         public static string[] user= { "admin", "hung", "huy" };
         public static string[] password= { "admin", "hung", "huy" };
+        public static int[] tien = { 1000, 1000, 500 };
         public static Nguoichoi[] Ngchoi;
         public static Room[] phongchoi;
         #endregion
@@ -65,18 +66,18 @@ namespace FormServer
                 {
                     //Nhận thông tin username
                     int y = (Int32)x;
-                    byte[] bytereceive = new byte[100];
+                    byte[] bytereceive = new byte[82];
                     int k = Ngchoi[y].sk.Receive(bytereceive);
                     string checkuser = "";
-                    for (int i = 0; i < k; i++)
+                    for (int i = 0; i < k&& Convert.ToChar(bytereceive[i])!='@'; i++)
                     {
                         checkuser += Convert.ToChar(bytereceive[i]);
                     }
                     //Nhận thông tin password
-                    bytereceive = new byte[100];
+                    bytereceive = new byte[82];
                     k = Ngchoi[y].sk.Receive(bytereceive);
                     string checkpass = "";
-                    for (int i = 0; i < k; i++)
+                    for (int i = 0; i < k&&Convert.ToChar(bytereceive[i]) != '@'; i++)
                     {
                         checkpass += Convert.ToChar(bytereceive[i]);
                     }
@@ -95,6 +96,8 @@ namespace FormServer
                                 }
                                 resultcheck = 1;
                             }
+                            if (resultcheck == 1)
+                                Ngchoi[y].tien = tien[i];
                             break;
                         }
                         else
@@ -104,8 +107,7 @@ namespace FormServer
                     }
                     //Thông báo cho Client kết quả kiểm tra
                     ASCIIEncoding encode = new ASCIIEncoding();
-                    Ngchoi[y].sk.Send(encode.GetBytes(Convert.ToString(resultcheck)));
-                    //Nếu username, password khớp thì bật thread Communicate, ngược lại ngắt kết nối
+                    //Nếu username, password khớp thì bật thread check request
                     if (resultcheck == 1)
                     {
                         DateTime now = DateTime.Now;
@@ -115,7 +117,10 @@ namespace FormServer
                         Thread t2 = new Thread(Ngchoi[y].check);
                         t2.IsBackground = true;
                         t2.Start(y);
+                        Ngchoi[y].sk.Send(encode.GetBytes(Convert.ToString(resultcheck+Ngchoi[y].tien.ToString())+"x"));
                     }
+                    else
+                        Ngchoi[y].sk.Send(encode.GetBytes(Convert.ToString(resultcheck)));
                 }
                 catch
                 {
@@ -178,9 +183,13 @@ namespace FormServer
                 for (int i = 0; i < count; i++)
                 {
                     if (Ngchoi[i].sk.Connected)
+                    {
                         Ngchoi[i].sk.Close();
+                        Ngchoi[i].sk2.Close();
+                    }
                 }
                 server.Stop();
+                server2.Stop();
                 stop = 1;
             }
             catch(Exception)

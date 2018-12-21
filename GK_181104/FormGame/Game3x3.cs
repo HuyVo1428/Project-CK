@@ -13,37 +13,46 @@ namespace FormGame
 {
     public partial class SUDOKU3x3 : Form
     {
-        //System.Media.SoundPlayer PlayerStart = new System.Media.SoundPlayer(@"C:\Sudoku\media\sound01.wav");
-        int [,]arr = new int[9, 9];
+        #region khai bao
+        System.Media.SoundPlayer PlayerStart = new System.Media.SoundPlayer(@"C:\Sudoku\media\sound01.wav");
         string checkresult = "";
         public int Check = 0;
         public static int room;
+        public int point = 0;
+        public int time=0;
+        public int stopthread = 0;
+        Thread t;
+        #endregion
         public SUDOKU3x3()
         {
             InitializeComponent();
             
 
         }
+        //Load
         private void Form1_Load(object sender, EventArgs e)
         {
-            //PlayerStart.PlayLooping();
+            PlayerStart.PlayLooping();
             button_play.Enabled = false;
             label1.Text = "ROOM:" + room.ToString();
-            Thread t = new Thread(receive);
+            stopthread = 0;
+            t = new Thread(receive);
             t.IsBackground = true;
             t.Start();            
             Addevent();
 
         }
+        //Thread receive
         private void receive()
         {
-            while(true)
+            while(stopthread==0)
             {
                 try
                 {
                     Control1.byteReceive = new byte[82];
                     Control1.stm.Read(Control1.byteReceive, 0, 82);
                     if (Convert.ToChar(Control1.byteReceive[0]) == 'N')
+                    #region Xử lý người chơi vào phòng
                     {
                         textBox82.Text += "Người chơi ";
                         int i = 1;
@@ -52,43 +61,59 @@ namespace FormGame
                             textBox82.Text += Convert.ToChar(Control1.byteReceive[i]);
                             if (Convert.ToChar(Control1.byteReceive[i + 1]) == '.')
                             {
-                                textBox82.Text += " đã vào phòng." ;
+                                textBox82.Text += " đã vào phòng.";
                                 textBox82.Text += Environment.NewLine;
                             }
                         }
-                        if(Control1.byteReceive[i+1]=='x')
-                                    button_play.Enabled = true;
+                        if (Control1.byteReceive[i + 1] == 'x')
+                            button_play.Enabled = true;
                     }
+                    #endregion
                     else
                     {
                         if (Convert.ToChar(Control1.byteReceive[0]) == 'c')
+                        #region Xử lý tạo mảng game
                         {
                             for (int i = 0; i < 9; i++)
                                 for (int j = 0; j < 9; j++)
                                 {
                                     //Chuyển đổi kiểu dữ liệu load mảng lên textbox (=0 bỏ qua)
                                     TextBox control = (TextBox)this.Controls.Find("textBox" + Convert.ToString(i * 9 + (j + 1)), true).SingleOrDefault();
+                                    control.Text = "";
                                     if (Convert.ToChar(Control1.byteReceive[i * 9 + j + 1]) != '0')
                                     {
-                                        control.Text += Convert.ToChar(Control1.byteReceive[i * 9  + j + 1]);
-                                        arr[i, j] = Convert.ToInt32(control.Text);
+                                        control.Text += Convert.ToChar(Control1.byteReceive[i * 9 + j + 1]);
                                         control.Enabled = false;
                                         control.BackColor = Color.Yellow;
                                     }
+                                    else
+                                    {
+                                        control.Enabled = true;
+                                        control.BackColor = Color.White;
+                                    }
                                 }
-                            textBox82.Text += "Chủ phòng đã bắt đầu game"+Environment.NewLine;
+                            textBox82.Text += "Chủ phòng đã bắt đầu game" + Environment.NewLine;
+                            point = 500;               
+                            label2.Text = "Point: " + point.ToString();
+                            time = 180;
+                            label3.Text = time.ToString();
                         }
+                        #endregion                
+
                         else
                         {
                             if (Convert.ToChar(Control1.byteReceive[0]) == 'r')
+                            #region Xử lý kết quả check của server
                             {
                                 string temp="";
                                 temp += Convert.ToChar(Control1.byteReceive[1]);
                                 checkresult = temp;
                             }
+                            #endregion
                             else
                             {
                                 if (Convert.ToChar(Control1.byteReceive[0]) == 'o')
+                                #region Xử lý thông tin chơi của đối thủ
                                 {
                                     string aa = "";
                                     aa += Convert.ToChar(Control1.byteReceive[1]);
@@ -98,10 +123,239 @@ namespace FormGame
                                     int y = Convert.ToInt32(bb);
                                     TextBox control = (TextBox)this.Controls.Find("textBox" + Convert.ToString((x*9)+(y+1)), true).SingleOrDefault();
                                     control.Text = "";
-                                    control.Text += Convert.ToChar(Control1.byteReceive[3]);
-                                    control.BackColor = Color.Blue;
+                                    if (Convert.ToChar(Control1.byteReceive[3]) != 'x')
+                                    {
+                                        control.Text += Convert.ToChar(Control1.byteReceive[3]);
+                                        control.BackColor = Color.Blue;
+                                    }
+                                    else
+                                    {
+                                        if (Convert.ToChar(Control1.byteReceive[3]) == 'x')
+                                            control.BackColor = Color.White;
+                                    }
                                 }
+                                #endregion
+                                else
+                                {
+                                    if(Convert.ToChar(Control1.byteReceive[0]) == 't')
+                                    #region Xử lý thời gian
+                                    {
+                                        time--;
+                                        label3.Text = time.ToString();
+                                    }
+                                    #endregion
+                                    else
+                                    {                                        
+                                        if (Convert.ToChar(Control1.byteReceive[0]) == 'f')
+                                        #region Xử lý kết quả
+                                        {
+                                            #region Th thắng
+                                            if (Convert.ToChar(Control1.byteReceive[1]) == '1')
+                                            {
+                                                string yourpoint = "";
+                                                string friendpoint = "";
+                                                int i = 2;
+                                                int ishost = -1;
+                                                for (; Convert.ToChar(Control1.byteReceive[i]) != '|'; i++)
+                                                    yourpoint += Convert.ToChar(Control1.byteReceive[i]);
+                                                i++;
+                                                for (; Convert.ToChar(Control1.byteReceive[i]) != '|'; i++)
+                                                    friendpoint += Convert.ToChar(Control1.byteReceive[i]);
+                                                MessageBox.Show("Bạn đã thắng. Điểm của bạn: " + yourpoint + " Điểm của đối thủ: " + friendpoint + " ."
+                                                    + Environment.NewLine + "Bạn được thưởng 500$");
+                                                string tien = "";
+                                                i++;
+                                                for (; Convert.ToChar(Control1.byteReceive[i]) != '@'; i++)
+                                                    tien += Convert.ToChar(Control1.byteReceive[i]);
+                                                i++;
+                                                if (Convert.ToChar(Control1.byteReceive[i]) == 'c')
+                                                    ishost = 0;
+                                                else
+                                                    ishost = 1;
+                                                if (Convert.ToInt32(tien) >= 500)
+                                                {
+                                                    DialogResult dr = new DialogResult();
+                                                    dr = MessageBox.Show("Bạn còn: " + tien.ToString() + " tien. Bạn có muốn chơi tiếp !"
+                                                        , "Chơi tiếp", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                                    if (dr == DialogResult.Yes)
+                                                    {
+                                                        if (ishost == 0)
+                                                        {
+                                                            try
+                                                            {
+                                                                Control1.sendmess("n", Control1.stm);
+                                                            }
+                                                            catch
+                                                            {
+                                                            }
+                                                        }
 
+                                                    }
+                                                    else
+                                                    {
+                                                        try
+                                                        {
+                                                            Control1.sendmess("q", Control1.stm);
+                                                            this.Close();
+                                                            break;
+                                                        }
+                                                        catch
+                                                        {
+                                                        }
+                                                    }
+                                                }
+                                                time = 180;
+                                            }
+                                            #endregion
+                                            else
+                                            {
+                                                if (Convert.ToChar(Control1.byteReceive[1]) == '0')
+                                                #region Th thua
+                                                {
+                                                    string yourpoint = "";
+                                                    string friendpoint = "";
+                                                    int i = 2;
+                                                    int ishost = -1;
+                                                    for (; Convert.ToChar(Control1.byteReceive[i]) != '|'; i++)
+                                                        yourpoint += Convert.ToChar(Control1.byteReceive[i]);
+                                                    i++;
+                                                    for (; Convert.ToChar(Control1.byteReceive[i]) != '|'; i++)
+                                                        friendpoint += Convert.ToChar(Control1.byteReceive[i]);
+                                                    MessageBox.Show("Bạn đã thua. Điểm của bạn: " + yourpoint + " Điểm của đối thủ: " + friendpoint + " ."
+                                                        + Environment.NewLine + "Bạn bị trừ 500$");
+                                                    string tien = "";
+                                                    i++;
+                                                    for(; Convert.ToChar(Control1.byteReceive[i]) != '@'; i++)
+                                                        tien += Convert.ToChar(Control1.byteReceive[i]);
+                                                    i++;
+                                                    if (Convert.ToChar(Control1.byteReceive[i]) == 'c')
+                                                        ishost = 0;
+                                                    else
+                                                        ishost = 1;
+                                                    if (Convert.ToInt32(tien) >= 500)
+                                                    {
+                                                        DialogResult dr = new DialogResult();
+                                                        dr = MessageBox.Show("Bạn còn: " + tien.ToString() + " tien. Bạn có muốn chơi tiếp !"
+                                                            , "Chơi tiếp", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                                        if (dr == DialogResult.Yes)
+                                                        {
+                                                            if (ishost == 0)
+                                                            {
+                                                                try
+                                                                {
+                                                                    Control1.sendmess("n", Control1.stm);
+                                                                }
+                                                                catch
+                                                                {
+                                                                }
+                                                            }
+
+                                                        }
+                                                        else
+                                                        {
+                                                            try
+                                                            {
+                                                                
+                                                                Control1.sendmess("q", Control1.stm);
+                                                                this.Close();
+                                                                break;
+                                                            }
+                                                            catch
+                                                            {
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        MessageBox.Show("Bạn còn: " + tien.ToString() + " tien. Bạn không đủ tiền chơi tiếp !");
+                                                        this.Close();
+                                                        break;
+                                                    }
+                                                    time = 180;
+                                                }
+                                                #endregion
+                                                else
+                                                #region Th hòa
+                                                {
+                                                    if (Convert.ToChar(Control1.byteReceive[1]) == '2')
+                                                    {
+                                                        string yourpoint = "";
+                                                        string friendpoint = "";
+                                                        int i = 2;
+                                                        int ishost = -1;
+                                                        for (; Convert.ToChar(Control1.byteReceive[i]) != '|'; i++)
+                                                            yourpoint += Convert.ToChar(Control1.byteReceive[i]);
+                                                        i++;
+                                                        for (; Convert.ToChar(Control1.byteReceive[i]) != '|'; i++)
+                                                            friendpoint += Convert.ToChar(Control1.byteReceive[i]);
+                                                        MessageBox.Show("Hòa. Điểm của bạn: " + yourpoint + " Điểm của đối thủ: " + friendpoint + " .");
+                                                        string tien = "";
+                                                        i++;
+                                                        for (; Convert.ToChar(Control1.byteReceive[i]) != '@'; i++)
+                                                            tien += Convert.ToChar(Control1.byteReceive[i]);
+                                                        i++;
+                                                        if (Convert.ToChar(Control1.byteReceive[i]) == 'c')
+                                                            ishost = 0;
+                                                        else
+                                                            ishost = 1;
+                                                        if (Convert.ToInt32(tien) >= 500)
+                                                        {
+                                                            DialogResult dr = new DialogResult();
+                                                            dr = MessageBox.Show("Bạn còn: " + tien.ToString() + " tien. Bạn có muốn chơi tiếp !"
+                                                                , "Chơi tiếp", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                                                            if (dr == DialogResult.Yes)
+                                                            {
+                                                                if (ishost == 0)
+                                                                {
+                                                                    try
+                                                                    {
+                                                                        Control1.sendmess("n", Control1.stm);
+                                                                    }
+                                                                    catch
+                                                                    {
+                                                                    }
+                                                                }
+
+                                                            }
+                                                            else
+                                                            {
+                                                                try
+                                                                {
+                                                                    Control1.sendmess("q", Control1.stm);
+                                                                    this.Close();
+                                                                    break;
+                                                                }
+                                                                catch
+                                                                {
+                                                                }
+                                                            }
+                                                        }
+                                                        time = 180;
+                                                    }
+                                                }
+                                                #endregion
+                                            }
+                                            for (int i = 0; i < 9; i++)
+                                                for (int j = 0; j < 9; j++)
+                                                {
+                                                    TextBox control = (TextBox)this.Controls.Find("textBox" + (i * 9 + (j + 1)).ToString(), true).SingleOrDefault();
+                                                    control.Enabled = false;
+                                                }
+                                        }
+                                        #endregion
+                                        else
+                                        {
+                                            #region Xử lý chơi tiếp
+                                            if (Convert.ToChar(Control1.byteReceive[0]) == 'n')
+                                            {
+                                                button_play.Enabled = true;
+                                                textBox82.Text += "Đối thủ muốn chơi tiếp !" + Environment.NewLine;
+                                            }
+                                            #endregion
+                                        }
+
+                                    }
+                                }
                             }
                         }
                     }                    
@@ -112,31 +366,7 @@ namespace FormGame
                 }
             }
         }
-        int check3(int[,] arr, int x, int y)
-        {
-            for (int i = 0; i < 9; i++)
-                if (arr[x, i] == arr[x, y] && i != y)
-                {
-                    //MessageBox.Show(x.ToString()+y.ToString()+" "+Convert.ToString(arr[x, i]) + " "+x.ToString() +i.ToString()+" "  + Convert.ToString(arr[x, y]));
-                    return 0;
-                }
-            for (int j = 0; j < 9; j++)
-                if (arr[j, y] == arr[x, y] && j != x)
-                {
-                    //MessageBox.Show(x.ToString() + y.ToString() + " " + Convert.ToString(arr[j,y]) + " "+j.ToString()+y.ToString()+" " + Convert.ToString(arr[x, y]));
-                    return 0;
-                }
-            int a = x / 3;
-            int b = y / 3;
-            for (int i = 3 * a; i < 3 * a + 3; i++)
-                for (int j = 3 * b; j < 3 * b + 3; j++)
-                    if (arr[i, j] == arr[x, y] && i != x && j != y)
-                    {
-                        //MessageBox.Show(x.ToString() + y.ToString() + " " + Convert.ToString(arr[i, j]) + " "+i.ToString()+j.ToString()+" " + Convert.ToString(arr[x, y]));
-                        return 0;
-                    }
-            return 1;
-        }
+        //Hàm addevent cho textbox
         public void Addevent()
         {
             //Duyệt 
@@ -162,19 +392,20 @@ namespace FormGame
                          {
                              #region Xử lý khi nhập số hợp lệ
                              //Đầu vào đúng gửi dữ liệu nhập về cho server: CẤU TRÚC: ?+3+<TOADOHANG>+<TOADOCOT>+<GIATRINHAP>
-                             arr[temp3, temp4] = Convert.ToInt32(Convert.ToString(e.KeyChar));
                              string test = "?" + "3" + temp1 + temp2 + e.KeyChar;
-                             ASCIIEncoding encode = new ASCIIEncoding();
                              try
                              {
-                                 Control1.byteSend = encode.GetBytes(test);
-                                 Control1.stm.Write(Control1.byteSend, 0, Control1.byteSend.Length);
+
+                                 Control1.sendmess(test, Control1.stm);
                                  //Nhận kết quả kiểm tra từ server
-                                 Thread.Sleep(150);                                 
+                                 Thread.Sleep(400);                                 
                                  #region Xu ly khi ô nhập
                                  if (checkresult == "0")
                                  {
                                      control.BackColor = Color.Red;
+                                     point = point - 100;
+                                     label2.Text = "Point: " + point.ToString();
+                                     checkresult = "-1";
                                  }
                                  else
                                  {
@@ -182,6 +413,13 @@ namespace FormGame
                                      {
                                          control.ForeColor = Color.White;
                                          control.BackColor = Color.Green;
+                                         point = point + 100;
+                                         label2.Text = "Point: " + point.ToString();
+                                         checkresult = "-1";
+                                     }
+                                     else
+                                     {
+                                         MessageBox.Show("Đối thủ đã nhanh hơn bạn ở ô này !");
                                      }
                                  }
                                  #endregion
@@ -199,17 +437,16 @@ namespace FormGame
                              e.Handled = false;
                              control.BackColor = Color.White;
                              control.ForeColor = Color.Black;
-                             arr[temp3, temp4] = 0;
+                             point = point - 200;
+                             label2.Text = "Point: " + point.ToString();
                              string test = "?" + "3" + temp1 + temp2 +"0";
-                             ASCIIEncoding encode = new ASCIIEncoding();
                              try
                              {
-                                 Control1.byteSend = encode.GetBytes(test);
-                                 Control1.stm.Write(Control1.byteSend, 0, Control1.byteSend.Length);
+
+                                 Control1.sendmess(test, Control1.stm);
                              }
                              catch
                              {
-
                              }
                              #endregion
                          }
@@ -217,140 +454,25 @@ namespace FormGame
                     #endregion
                 }
         }
-        //Khởi tạo form lấy dữ liệu mảng từ server + Thêm event ràng buộc dữ liệu nhập vào+Gửi dữ liệu hợp lệ về server để kiểm tra
-        private void SUDOKU3x3_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            try
-            {
-                ASCIIEncoding encode = new ASCIIEncoding();
-                Control1.byteSend = encode.GetBytes("x");
-                Control1.stm.Write(Control1.byteSend, 0, Control1.byteSend.Length);
-                Control1.tcpclnt.Close();
-                Control1.Exit();
-            }
-            catch
-            {
-            }
-        }
-        public Boolean CheckFinal()
-        {
-            Boolean result=true;
-            for (int i = 0; i < 9; i++)
-                for (int j = 0; j < 9; j++)
-                {
-                    TextBox control = (TextBox)this.Controls.Find("textBox" + (i * 9 + (j + 1)).ToString(), true).SingleOrDefault();
-                    if (control.Text == "")
-                        control.BackColor = Color.Red;
-                    if (control.BackColor == Color.Red)
-                        result = false;
-                    control.Enabled = false;                   
-                }
-            return result;
-        }
-        private void button1_Click(object sender, EventArgs e)
-        {
-            if (CheckFinal() == true)
-                pnNotify.Visible = true;
-            else
-            {
-                lbWin.Text = "Tiếc quá,\nbạn thua rồi!";
-                pnNotify.Visible = true;
-            }
-            Check = 1;
-            
-        }
-        private void btnReplay_Click(object sender, EventArgs e)
-        {
-            pnNotify.Visible = false;
-            for (int i = 0; i < 9; i++)
-                for (int j = 0; j < 9; j++)
-                {
-                    TextBox control = (TextBox)this.Controls.Find("textBox" + (i * 9 + (j + 1)).ToString(), true).SingleOrDefault();
-                    if(Check==1)
-                    {
-                        if ((control.BackColor==Color.Red)||(control.BackColor==Color.Green))
-                        {
-                            control.Enabled = true;
-                        }
-                    }
-                    if (control.Enabled == true)
-                    {
-                        control.Clear();
-                        control.BackColor = Color.White;
-                        control.ForeColor = Color.Black;
-                        ASCIIEncoding encode = new ASCIIEncoding();
-                        Control1.byteSend = encode.GetBytes("?3" + i.ToString() + j.ToString() + "0");
-                        arr[i, j] = 0;
-                        Control1.stm.Write(Control1.byteSend, 0, Control1.byteSend.Length);
-                    }
-                }
-
-        }
-        private void btnRestart_Click(object sender, EventArgs e)
-        {
-            Form game = new SUDOKU3x3();
-            try
-            {
-                //if (SUDOKU3x3.active)
-                //    game.Dispose();
-                //else
-                //    if (Game4x4.active)
-                //    Game4x4.Tat();
-                //Gửi yêu cầu tạo mảng 3x3
-                ASCIIEncoding encode = new ASCIIEncoding();
-                Control1.byteSend = encode.GetBytes("!3");
-                Control1.stm.Write(Control1.byteSend, 0, Control1.byteSend.Length);
-                Thread.Sleep(500);
-                //Load game 3x3
-                game = new SUDOKU3x3();
-                game.Show();
-                
-                this.Dispose();
-            }
-            catch
-            {
-            }
-        }
-        private void btnLevel_Click(object sender, EventArgs e)
-        {
-            //Tắt game hiện hành
-            Form game = new Game4x4();
-            try
-            {
-                //if (SUDOKU3x3.active)
-                //    game.Dispose();
-                //else
-                //    if (Game4x4.active)
-                //    Game4x4.Tat();
-                //Gửi yêu cầu tạo mảng 3x3
-                ASCIIEncoding encode = new ASCIIEncoding();
-                Control1.byteSend = encode.GetBytes("!4");
-                Control1.stm.Write(Control1.byteSend, 0, Control1.byteSend.Length);
-                Thread.Sleep(500);
-                //Load game 3x3
-                game = new Game4x4();
-                game.Show();
-                
-                this.Dispose();
-            }
-            catch
-            {
-            }
-        }
+        //Nút out
         private void button2_Click(object sender, EventArgs e)
         {
-            try
+
+            DialogResult dr = new DialogResult();
+            dr = MessageBox.Show("Bạn sẽ bị xử thua, bạn chắc chán muốn thoát", "Thoát phòng", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (dr == DialogResult.Yes)
             {
-                ASCIIEncoding encode = new ASCIIEncoding();
-                Control1.byteSend = encode.GetBytes("x");
-                Control1.stm.Write(Control1.byteSend, 0, Control1.byteSend.Length);
-                Control1.tcpclnt.Close();
-                Control1.Exit();
+                try
+                {
+                    Control1.sendmess("q", Control1.stm);
+                }
+                catch
+                {
+                }
+                this.Close();
+                stopthread = 1;
             }
-            catch
-            {
-            }            
-            this.Close();
+
         }
         private void panel3_Paint(object sender, PaintEventArgs e)
         {
@@ -364,33 +486,34 @@ namespace FormGame
         {
 
         }
+        //Nút âm thanh
         private void btnSound_Click(object sender, EventArgs e)
         {
             
             if (btnSound.Text == "Tắt Âm thanh")
             {
-                //PlayerStart.Stop();
+                PlayerStart.Stop();
                 btnSound.Text = "Bật Âm thanh";
             }
             else
             {
-                //PlayerStart.PlayLooping();
+                PlayerStart.PlayLooping();
                 btnSound.Text = "Tắt Âm thanh";
             }
         }
-
+        //Nút play
         private void button_play_Click(object sender, EventArgs e)
         {
-            ASCIIEncoding encode = new ASCIIEncoding();
             try
             {
-                Control1.byteSend = encode.GetBytes("!");
-                Control1.stm.Write(Control1.byteSend, 0, Control1.byteSend.Length);
+
+                Control1.sendmess("!", Control1.stm);
             }
             catch
             {
 
             }
+            button_play.Enabled = false;
         }
     }
 }
